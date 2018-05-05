@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.AllTasksActivity" />
+        <activity android:name=".activities.RecentTasksActivity" />
+        <activity android:name=".activities.NewTaskActivity" />
+        <activity android:name=".activities.PreferenceActivity"></activity>
     </application>
 
 </manifest>
