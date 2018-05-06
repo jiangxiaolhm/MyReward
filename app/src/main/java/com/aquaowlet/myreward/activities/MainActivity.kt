@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity(), BlankFragment.OnFragmentInteractionLis
     }
 
     private var mainTextView: TextView? = null
-    private var fragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +22,6 @@ class MainActivity : AppCompatActivity(), BlankFragment.OnFragmentInteractionLis
 
 //        mainTextView = findViewById(R.id.main_tv)
 //        mainTextView?.text = "Hello Kotlin"
-
-
 
     }
 }
