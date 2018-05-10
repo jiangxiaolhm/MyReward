@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ic_collapse">&#xe01d;</string>
+    <string name="ic_expand">&#xe02f;</string>
+    <string name="ic_overflow">&#xe059;</string>
+
+</resources>

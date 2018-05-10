@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="color_tree_node_background">#C5FFC7</color>
+    <color name="color_tree_node_shadow">#3F553F</color>
+    <color name="color_icon">#12558C</color>
 </resources>

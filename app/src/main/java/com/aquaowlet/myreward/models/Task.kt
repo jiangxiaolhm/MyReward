@@ -9,35 +9,61 @@ data class Task(
         var name: String,
         var description: String,
         var type: Int,
+        var archived: Boolean,
         var status: Int,
         var startAt: Date?,
         var dueAt: Date?,
+        var repeatable: Boolean,
+        var period: Long,
         var priority: Int,
         var parent: Task?,
         var children: List<Task>,
         var prerequisite: Task?,
         var reward: String,
-        var punishment: String,
-        var archived: Boolean
+        var punishment: String
+
 ) {
 
     /**
-     * Empty constructor
+     * Empty default constructor.
      */
     constructor() : this(
             "",
             "",
             TYPE_TASK,
+            false,
             STATUS_TODO,
             null,
             null,
+            false,
+            0,
             0,
             null,
             emptyList<Task>(),
             null,
             "",
+            "")
+
+    /**
+     * Constructor with task name and due date only.
+     */
+    constructor(name: String, dueAt: Date) :this(
+            name,
             "",
-            false)
+            TYPE_TASK,
+            false,
+            STATUS_TODO,
+            null,
+            dueAt,
+            false,
+            0,
+            0,
+            null,
+            emptyList<Task>(),
+            null,
+            "",
+            ""
+    )
 
     companion object {
         /**
