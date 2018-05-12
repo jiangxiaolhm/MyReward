@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.aquaowlet.myreward.R
-import com.aquaowlet.myreward.holders.TaskTreeItemHolder
+import com.aquaowlet.myreward.holders.TaskTreeItemViewHolder
+import com.aquaowlet.myreward.holders.TaskTreeViewHolder
 import com.aquaowlet.myreward.models.Task
 import com.unnamed.b.atv.model.TreeNode
 import com.unnamed.b.atv.view.AndroidTreeView
@@ -15,7 +16,7 @@ import java.util.*
 
 class TaskTreeFragment : Fragment() {
 
-    private var taskTreeView: AndroidTreeView? = null
+    var mTaskTreeView: AndroidTreeView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -24,23 +25,19 @@ class TaskTreeFragment : Fragment() {
 
         val root = TreeNode.root()
 
-        val parent = TreeNode(Task("parent", Date())).setViewHolder(TaskTreeItemHolder(context))
-        val child0 = TreeNode(Task("child 0", Date())).setViewHolder(TaskTreeItemHolder(context))
-        val child1 = TreeNode(Task("child 1", Date())).setViewHolder(TaskTreeItemHolder(context))
-        val child2 = TreeNode(Task("child 2", Date())).setViewHolder(TaskTreeItemHolder(context))
-        val child3 = TreeNode(Task("child 3", Date())).setViewHolder(TaskTreeItemHolder(context))
+        val parent = TreeNode(Task("parent", Date())).setViewHolder(TaskTreeItemViewHolder(context))
+        val child0 = TreeNode(Task("child 0", Date())).setViewHolder(TaskTreeItemViewHolder(context))
+        val child1 = TreeNode(Task("child 1", Date())).setViewHolder(TaskTreeItemViewHolder(context))
+        val child2 = TreeNode(Task("child 2", Date())).setViewHolder(TaskTreeItemViewHolder(context))
+        val child3 = TreeNode(Task("child 3", Date())).setViewHolder(TaskTreeItemViewHolder(context))
         parent.addChildren(child0, child1)
         root.addChild(parent)
         child0.addChildren(child2, child3)
-        taskTreeView = AndroidTreeView(context, root)
-        taskTreeView?.setUseAutoToggle(false)
-        taskTreeView?.setDefaultNodeClickListener { node, _ ->
-            if (!node.isLeaf) {
-                taskTreeView?.toggleNode(node)
-            }
-        }
 
-        taskTreeContainerView.addView(taskTreeView?.view)
+        mTaskTreeView = TaskTreeViewHolder.getInstance(context).taskTreeView
+        mTaskTreeView?.setRoot(root)
+
+        taskTreeContainerView.addView(mTaskTreeView?.view)
 
         return rootView
     }
