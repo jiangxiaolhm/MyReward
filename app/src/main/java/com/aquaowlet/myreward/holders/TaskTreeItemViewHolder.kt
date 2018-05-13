@@ -14,10 +14,13 @@ import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskTreeItemViewHolder(context: Context?) : TreeNode.BaseNodeViewHolder<Task>(context) {
 
+    private var mTaskTreeViewHolder: TaskTreeViewHolder? = null
+
     override fun createNodeView(node: TreeNode?, value: Task?): View {
 
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.item_task, null, false)
+        mTaskTreeViewHolder = TaskTreeViewHolder.getInstance(context)
 
         if (node != null) {
             view.placeholder.width = (node.level - 1) * 20
@@ -32,16 +35,18 @@ class TaskTreeItemViewHolder(context: Context?) : TreeNode.BaseNodeViewHolder<Ta
             node.setLongClickListener { node, value ->
                 Log.d(Constant.TESTING, "LONG CLICK")
 
+//                mTaskTreeViewHolder?.taskTreeView?.collapseNode(node)
+
                 if (value is Task) {
                     Log.d(Constant.TESTING, "value name ${value.name}")
 
-                    val dragData = ClipData.newPlainText("TASK_NAME", value.name)
+//                    val dragData = ClipData.newPlainText("TASK_NAME", value.name)
 
 
                     node.viewHolder.view.startDrag(
                             null,
                             View.DragShadowBuilder(node.viewHolder.view),
-                            value,
+                            node,
                             0
                     )
                 }

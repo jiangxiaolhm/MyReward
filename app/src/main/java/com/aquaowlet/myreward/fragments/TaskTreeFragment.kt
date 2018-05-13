@@ -16,7 +16,7 @@ import java.util.*
 
 class TaskTreeFragment : Fragment() {
 
-    var mTaskTreeView: AndroidTreeView? = null
+    private var mTaskTreeView: AndroidTreeView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
