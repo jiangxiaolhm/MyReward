@@ -4,8 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="horizontal"
-    android:paddingHorizontal="@dimen/fragment_task_tree_margin_horizontal"
-    android:paddingVertical="@dimen/fragment_task_tree_margin_vertical">
+    android:paddingBottom="@dimen/fragment_task_tree_padding_vertical"
+    android:paddingLeft="@dimen/fragment_task_tree_padding_horizontal"
+    android:paddingRight="@dimen/fragment_task_tree_padding_horizontal"
+    android:paddingTop="@dimen/fragment_task_tree_padding_vertical">
 
     <RelativeLayout
         android:id="@+id/layout_task_tree_container"

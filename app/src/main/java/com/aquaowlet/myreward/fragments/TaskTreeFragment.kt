@@ -30,9 +30,10 @@ class TaskTreeFragment : Fragment() {
         val child1 = TreeNode(Task("child 1", Date())).setViewHolder(TaskTreeItemViewHolder(context))
         val child2 = TreeNode(Task("child 2", Date())).setViewHolder(TaskTreeItemViewHolder(context))
         val child3 = TreeNode(Task("child 3", Date())).setViewHolder(TaskTreeItemViewHolder(context))
+        val child4 = TreeNode(Task("child 4", Date())).setViewHolder(TaskTreeItemViewHolder(context))
         parent.addChildren(child0, child1)
         root.addChild(parent)
-        child0.addChildren(child2, child3)
+        child0.addChildren(child2, child3, child4)
 
         mTaskTreeView = TaskTreeViewHolder.getInstance(context).taskTreeView
         mTaskTreeView?.setRoot(root)

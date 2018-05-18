@@ -30,8 +30,7 @@
             android:id="@+id/text_task_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/icon_collapse"
-            android:text="something" />
+            android:layout_toEndOf="@id/icon_collapse" />
 
         <com.github.johnkil.print.PrintView
             android:id="@+id/icon_overflow"

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Bottom Shadow -->
+    <!-- Insert dragged node below current node -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/color_tree_node_shadow" />
+            <solid android:color="@color/color_tree_node_drop_location_indicator" />
             <corners android:radius="2dp" />
-
         </shape>
-
-
     </item>
 
     <!-- Top Background -->
-    <item android:bottom="1dp">
+    <item android:bottom="2dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/color_tree_node_background" />
             <corners android:radius="2dp" />
