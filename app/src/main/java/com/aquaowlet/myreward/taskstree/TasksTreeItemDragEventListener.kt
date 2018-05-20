@@ -1,16 +1,24 @@
-package com.aquaowlet.myreward.views
+/*
+ * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Copyright (c) 2018. All right reserved
+ *
+ * Last modified 19/05/18 6:19 PM
+ */
+
+package com.aquaowlet.myreward.taskstree
 
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.aquaowlet.myreward.R
-import com.aquaowlet.myreward.holders.TaskTreeViewHolder
 import com.aquaowlet.myreward.util.Constant
 import com.unnamed.b.atv.model.TreeNode
 import com.unnamed.b.atv.view.AndroidTreeView
+import com.unnamed.b.atv.view.TreeNodeWrapperView
 
-class TaskTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
+class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
 
     private val mTaskTreeNode = taskNode
     private var mTaskTreeView: AndroidTreeView? = null
@@ -42,8 +50,8 @@ class TaskTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
         // Get the task view in the tree node.
         v as ViewGroup
         val taskView = v.getChildAt(1)
-        if (taskView.id != R.id.layout_tree_node) {
-            Log.e(Constant.ERROR, "The taskView from current view at index 1 is not the layout_tree_node.")
+        if (taskView.id != R.id.layout_tree_node_content) {
+            Log.e(Constant.ERROR, "The taskView from current view at index 1 is not the layout_tree_node_content.")
             return false
         }
 
@@ -75,27 +83,18 @@ class TaskTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
             }
             DragEvent.ACTION_DROP -> {
                 val draggedTaskNode = event.localState as TreeNode
-                mTaskTreeView = TaskTreeViewHolder.getInstance(v.context).taskTreeView
+                mTaskTreeView = TasksTreeViewHolder.getInstance(v.context).taskTreeView
                 if (mTaskTreeNode != null) {
-                    if (draggedTaskNode === mTaskTreeNode) {
-                        // Current node and the dragged node are the same node.
-                        // Do nothing.
-                    } else if (draggedTaskNode.parent === mTaskTreeNode.parent) {
-                        // Current node and the dragged node are sibling nodes in a tree.
-                        // Change their order.
+                    // When the dragged node and current are the same node or the dragged node is the ancestor node of current, prevent the insertion.
+                    if (draggedTaskNode != mTaskTreeNode && !isAncestor(draggedTaskNode, mTaskTreeNode)) {
                         if (dropLocation != MOVE_INTO_SUBTREE_OR_SAME_NODE) {
+                            // Insert the dragged node above or below current node according the drop location.
                             insertNode(draggedTaskNode, dropLocation)
                         } else {
-                            // In the middle
+                            // Insert the dragged into current node's subtree.
                             // TODO insert into the subtree
                         }
-
-                    } else if (draggedTaskNode.parent === mTaskTreeNode || mTaskTreeNode.parent === draggedTaskNode) {
-                        Log.d(Constant.TESTING, "Parent and child")
-                    } else {
-                        Log.d(Constant.TESTING, "Other relationship")
                     }
-
                 }
                 return true
             }
@@ -140,6 +139,15 @@ class TaskTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
 
         // Insert the dragged node to the insert point.
         mTaskTreeView!!.addNode(mTaskTreeNode.parent, draggedTaskNode)
+
+        // Get the tree node outer wrapper view.
+        val draggedTaskNodeWrapperView = draggedTaskNode.viewHolder.view as TreeNodeWrapperView
+        // Get the tree node item root layout view.
+        val treeNodeRootLayout = draggedTaskNodeWrapperView.nodeContainer.getChildAt(0) as ViewGroup
+        // Get the indent from the root layout.
+        val treeNodeIndentTextView = treeNodeRootLayout.getChildAt(0) as TextView
+        // Set indent according to its level.
+        treeNodeIndentTextView.width = (draggedTaskNode.level - 1) * 20
 
         // Insert removed nodes after the inserted dragged node.
         for (i in 0 until removedNodes.size) {

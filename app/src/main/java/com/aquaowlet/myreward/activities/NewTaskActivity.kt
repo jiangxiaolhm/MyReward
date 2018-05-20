@@ -1,13 +1,19 @@
+/*
+ * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Copyright (c) 2018. All right reserved
+ *
+ * Last modified 20/05/18 2:03 AM
+ */
+
 package com.aquaowlet.myreward.activities
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import com.aquaowlet.myreward.R
-import com.aquaowlet.myreward.models.Task
+import com.aquaowlet.myreward.data.Task
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Copyright (c) 2018. All right reserved
+  ~
+  ~ Last modified 19/05/18 5:21 PM
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_tree_node_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/placeholder"
+        android:id="@+id/text_tree_node_indent"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
     <RelativeLayout
-        android:id="@+id/layout_tree_node"
+        android:id="@+id/layout_tree_node_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@id/placeholder"
+        android:layout_toEndOf="@id/text_tree_node_indent"
         android:background="@drawable/tree_node"
         android:gravity="center_vertical"
         android:minHeight="32dp">

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Copyright (c) 2018. All right reserved
+  ~
+  ~ Last modified 11/05/18 2:28 AM
+  -->
+
 <resources>
 
     <string name="ic_collapse">&#xe01d;</string>
