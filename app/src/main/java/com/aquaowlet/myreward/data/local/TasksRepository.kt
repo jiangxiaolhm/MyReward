@@ -11,29 +11,29 @@ import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
 import com.aquaowlet.myreward.data.Task
-import com.aquaowlet.myreward.data.TaskParentChildren
+import com.aquaowlet.myreward.data.TaskParentAndChildren
 
 class TasksRepository(context: Context) {
 
     private val tasksDao: TasksDao
-    private val taskParentChildrenDao: TaskParentChildrenDao
+    private val mTaskParentAndChildrenDao: TaskParentAndChildrenDao
     private val allTasks: LiveData<List<Task>>
-    private val allParentChildren: LiveData<List<TaskParentChildren>>
+    private val mAllParentAndChildren: LiveData<List<TaskParentAndChildren>>
 
     init {
         val appDatabase = AppDatabase.getInstance(context)
         tasksDao = appDatabase.tasksDao()
         allTasks = tasksDao.getAllTasks()
-        taskParentChildrenDao = appDatabase.taskParentChildren()
-        allParentChildren = taskParentChildrenDao.getTaskParentChildren()
+        mTaskParentAndChildrenDao = appDatabase.taskParentAndChildren()
+        mAllParentAndChildren = mTaskParentAndChildrenDao.getTaskParentChildren()
     }
 
     fun getAllTasks(): LiveData<List<Task>> {
         return allTasks
     }
 
-    fun getAllParentChildren(): LiveData<List<TaskParentChildren>> {
-        return allParentChildren
+    fun getAllParentChildren(): LiveData<List<TaskParentAndChildren>> {
+        return mAllParentAndChildren
     }
 
     fun insert(task: Task) {

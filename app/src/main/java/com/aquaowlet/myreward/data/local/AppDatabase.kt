@@ -21,7 +21,7 @@ import android.os.AsyncTask
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tasksDao(): TasksDao
-    abstract fun taskParentChildren(): TaskParentChildrenDao
+    abstract fun taskParentAndChildren(): TaskParentAndChildrenDao
 
     companion object {
         @Volatile
@@ -31,7 +31,6 @@ abstract class AppDatabase : RoomDatabase() {
 
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
-                println("roomDatabaseCallback onopen is executed ")
                 PopulateDbAsync(INSTANCE!!).execute()
             }
         }
@@ -39,21 +38,12 @@ abstract class AppDatabase : RoomDatabase() {
         private class PopulateDbAsync internal constructor(db: AppDatabase) : AsyncTask<Void, Void, Void>() {
 
             private val dao: TasksDao = db.tasksDao()
-
             override fun doInBackground(vararg params: Void): Void? {
                 dao.deleteTasks()
                 val parent = Task("parent")
-                println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                println("parent name: " + parent.name)
-                println("parent id: " + parent.id)
                 dao.insertTask(parent)
                 val child1 = Task("child")
-
                 child1.parentId = parent.id
-                println("child1 name:" + child1.name)
-                println("child1's parent id: " + child1.parentId)
-                println("child1 id: " + child1.id)
-                println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 dao.insertTask(child1)
                 return null
             }

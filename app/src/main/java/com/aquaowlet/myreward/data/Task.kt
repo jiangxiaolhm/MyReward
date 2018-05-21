@@ -45,20 +45,6 @@ data class Task(
     @Ignore
     var isTreeNode: Boolean = false
 
-//    /**
-//     * Constructor with task name only.
-//     */
-//    @Ignore constructor(name: String, parentId: String?) : this() {
-//        this.name = name
-//        if (parentId != null) {
-//            this.parentId = parentId
-//        }
-//        if (id.isEmpty()) {
-//            this.id = UUID.randomUUID().toString()
-//            println("-------" + this.name + " " + this.id)
-//        }
-//    }
-
     companion object {
         /**
          * Task types.
