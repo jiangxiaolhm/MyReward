@@ -11,26 +11,26 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import com.aquaowlet.myreward.data.Task
-import com.aquaowlet.myreward.data.TaskParentAndChildren
+import com.aquaowlet.myreward.data.TaskCurrentAndChildren
 import com.aquaowlet.myreward.data.local.TasksRepository
 
 class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
 
     private val tasksRepository = TasksRepository(context)
     private val allTasks: LiveData<List<Task>>
-    private val mAllParentAndChildren: LiveData<List<TaskParentAndChildren>>
+    private val mAllCurrentAndChildren: LiveData<List<TaskCurrentAndChildren>>
 
     init {
         allTasks = tasksRepository.getAllTasks()
-        mAllParentAndChildren = tasksRepository.getAllParentChildren()
+        mAllCurrentAndChildren = tasksRepository.getAllParentChildren()
     }
 
     fun getAllTasks(): LiveData<List<Task>> {
         return allTasks
     }
 
-    fun getAllParentChildren(): LiveData<List<TaskParentAndChildren>> {
-        return mAllParentAndChildren
+    fun getAllParentChildren(): LiveData<List<TaskCurrentAndChildren>> {
+        return mAllCurrentAndChildren
     }
 
     fun insert(task: Task) {

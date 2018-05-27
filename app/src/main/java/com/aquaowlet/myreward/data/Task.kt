@@ -9,6 +9,7 @@ package com.aquaowlet.myreward.data
 
 import android.arch.persistence.room.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Data model for a task.
@@ -30,10 +31,6 @@ data class Task(
         @ColumnInfo(name = "repeatable") var repeatable: Boolean = false,
         @ColumnInfo(name = "period") var period: Long = 0,
         @ColumnInfo(name = "priority") var priority: Int = 0,
-        @ColumnInfo(name = "parent_id") var parentId: String = "",
-//        @Embedded var parent: Task? = null,
-//        @ColumnInfo(name = "children") @Embedded var children: List<Task> = arrayListOf(),
-//        @ColumnInfo(name = "parent") var prerequisiteId: String = "",
         @ColumnInfo(name = "reward") var reward: String = "",
         @ColumnInfo(name = "punishment") var punishment: String = ""
 ) {
@@ -41,9 +38,20 @@ data class Task(
     @PrimaryKey
     @ColumnInfo(name = "id")
     var id: String = UUID.randomUUID().toString()
-
     @Ignore
-    var isTreeNode: Boolean = false
+    val children: ArrayList<Task> = arrayListOf()
+    @Ignore
+    var parent: Task? = null
+    @ColumnInfo(name = "parent_id")
+    var parentId: String = ""
+    @ColumnInfo(name = "index_in_parent")
+    var indexInParent: Int = -1
+
+    fun addChild(child: Task) {
+        this.children.add(child)
+        child.parent = this
+        child.parentId = this.id
+    }
 
     companion object {
         /**

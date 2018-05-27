@@ -10,9 +10,9 @@ package com.aquaowlet.myreward.data
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Relation
 
-class TaskParentAndChildren(
+class TaskCurrentAndChildren(
         @Embedded
-        var parent: Task = Task(),
+        var current: Task = Task(),
         @Relation(parentColumn = "id", entityColumn = "parent_id", entity = Task::class)
         var children: List<Task> = listOf()
 )

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
   ~ Copyright (c) 2018. All right reserved
   ~
@@ -30,9 +29,11 @@
             android:id="@+id/icon_collapse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:iconColor="@color/color_icon"
             app:iconFont="fonts/holo-icon-font.ttf"
-            app:iconSize="20dp" />
+            app:iconSize="20dp"
+            app:iconText="@string/ic_collapse" />
 
         <TextView
             android:id="@+id/text_task_name"

@@ -21,7 +21,7 @@ import android.os.AsyncTask
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tasksDao(): TasksDao
-    abstract fun taskParentAndChildren(): TaskParentAndChildrenDao
+    abstract fun taskCurrentAndChildren(): TaskCurrentAndChildrenDao
 
     companion object {
         @Volatile
@@ -38,13 +38,35 @@ abstract class AppDatabase : RoomDatabase() {
         private class PopulateDbAsync internal constructor(db: AppDatabase) : AsyncTask<Void, Void, Void>() {
 
             private val dao: TasksDao = db.tasksDao()
+            /**
+             * Mock data
+             */
             override fun doInBackground(vararg params: Void): Void? {
                 dao.deleteTasks()
-                val parent = Task("parent")
-                dao.insertTask(parent)
-                val child1 = Task("child")
-                child1.parentId = parent.id
+
+                val parent1 = Task("parent 1")
+                val parent2 = Task("parent 2")
+                val child1 = Task("child 1")
+                val child2 = Task("child 2")
+                val child3 = Task("child 3")
+                val child4 = Task("child 4")
+
+                parent1.indexInParent = 1
+                parent2.indexInParent = 0
+                parent1.addChild(child1)
+                parent1.addChild(child2)
+                child2.addChild(child3)
+                child2.addChild(child4)
+                child3.indexInParent = 1
+                child4.indexInParent = 0
+
+                dao.insertTask(parent1)
+                dao.insertTask(parent2)
                 dao.insertTask(child1)
+                dao.insertTask(child2)
+                dao.insertTask(child3)
+                dao.insertTask(child4)
+
                 return null
             }
         }

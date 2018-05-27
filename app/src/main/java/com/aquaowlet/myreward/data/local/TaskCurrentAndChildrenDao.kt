@@ -10,11 +10,11 @@ package com.aquaowlet.myreward.data.local
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import com.aquaowlet.myreward.data.TaskParentAndChildren
+import com.aquaowlet.myreward.data.TaskCurrentAndChildren
 
 @Dao
-interface TaskParentAndChildrenDao {
+interface TaskCurrentAndChildrenDao {
 
-    @Query("SELECT * FROM tasks")
-    fun getTaskParentChildren(): LiveData<List<TaskParentAndChildren>>
+    @Query("SELECT * FROM tasks ORDER BY index_in_parent")
+    fun getTaskParentChildren(): LiveData<List<TaskCurrentAndChildren>>
 }
