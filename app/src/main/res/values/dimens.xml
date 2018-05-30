@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
   ~ Copyright (c) 2018. All right reserved
   ~
-  ~ Last modified 19/05/18 4:39 AM
+  ~ Last modified 20/05/18 3:05 AM
   -->
 
 <resources>
@@ -12,4 +12,5 @@
     <dimen name="item_task_padding_horizontal">8dp</dimen>
     <dimen name="fragment_task_tree_padding_horizontal">8dp</dimen>
     <dimen name="fragment_task_tree_padding_vertical">16dp</dimen>
+    <dimen name="activity_add_edit_task_row_height">48dp</dimen>
 </resources>

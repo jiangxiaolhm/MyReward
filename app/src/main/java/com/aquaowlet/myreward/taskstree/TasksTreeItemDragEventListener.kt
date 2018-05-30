@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Created by Eric Hongming Lin on 28/05/18 3:01 AM
  * Copyright (c) 2018. All right reserved
  *
- * Last modified 19/05/18 6:19 PM
+ * Last modified 28/05/18 12:13 AM
  */
 
 package com.aquaowlet.myreward.taskstree
@@ -20,8 +20,8 @@ import com.unnamed.b.atv.view.TreeNodeWrapperView
 
 class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
 
-    private val mTaskTreeNode = taskNode
-    private var mTaskTreeView: AndroidTreeView? = null
+    private val taskTreeNode = taskNode
+    private var taskTreeView: AndroidTreeView? = null
 
     companion object {
         const val MOVE_ABOVE_CURRENT_NODE = 0
@@ -83,17 +83,17 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
             }
             DragEvent.ACTION_DROP -> {
                 val draggedTaskNode = event.localState as TreeNode
-                mTaskTreeView = TasksTreeViewHolder.getInstance(v.context).taskTreeView
-                mTaskTreeNode!!
+                taskTreeView = TasksTreeViewHolder.getInstance(v.context).taskTreeView
+                taskTreeNode!!
                 // When the dragged node and current are the same node or the dragged node is the ancestor node of current, prevent the insertion.
-                if (draggedTaskNode != mTaskTreeNode && !isAncestor(draggedTaskNode, mTaskTreeNode)) {
+                if (draggedTaskNode != taskTreeNode && !isAncestor(draggedTaskNode, taskTreeNode)) {
                     if (dropLocation != MOVE_INTO_SUBTREE_OR_SAME_NODE) {
                         // Insert the dragged node above or below current node according the drop location.
                         insertNodeAdjacent(draggedTaskNode, dropLocation)
                     } else {
                         // The dragged task node should not be a child of the current task tree node.
                         // Because the dragged task node is already in the subtree of the current task tree node.
-                        if (draggedTaskNode.parent != mTaskTreeNode) {
+                        if (draggedTaskNode.parent != taskTreeNode) {
                             // Insert the dragged into current node's subtree.
                             insertNodeIntoSubtree(draggedTaskNode)
                         }
@@ -136,24 +136,24 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
         // Remove the dragged node from it parent and modify its parent node accordingly.
         removeDraggedNodeFromParent(draggedTaskNode)
 
-        val parentNode = mTaskTreeNode!!.parent
+        val parentNode = taskTreeNode!!.parent
         // The drop point node insertPoint in its current' children list for insert the dragged node
-        val insertPoint = parentNode.children.indexOf(mTaskTreeNode) + dropLocation
+        val insertPoint = parentNode.children.indexOf(taskTreeNode) + dropLocation
 
         // Temporally store removed nodes after the insert point.
         val removedNodes = mutableListOf<TreeNode>()
         for (i in insertPoint until parentNode.children.size) {
             removedNodes.add(parentNode.children[insertPoint])
-            mTaskTreeView!!.removeNode(parentNode.children[insertPoint])
+            taskTreeView!!.removeNode(parentNode.children[insertPoint])
         }
 
         // Insert the dragged node to the insert point.
-        mTaskTreeView!!.addNode(mTaskTreeNode.parent, draggedTaskNode)
+        taskTreeView!!.addNode(taskTreeNode.parent, draggedTaskNode)
         updateTreeNodeIndent(draggedTaskNode)
 
         // Insert removed nodes after the inserted dragged node.
         for (i in 0 until removedNodes.size) {
-            mTaskTreeView!!.addNode(parentNode, removedNodes[i])
+            taskTreeView!!.addNode(parentNode, removedNodes[i])
         }
     }
 
@@ -163,9 +163,9 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
     private fun insertNodeIntoSubtree(draggedTaskNode: TreeNode) {
         // Remove the dragged node from it parent and modify its parent node accordingly.
         removeDraggedNodeFromParent(draggedTaskNode)
-        mTaskTreeView!!.addNode(mTaskTreeNode, draggedTaskNode)
+        taskTreeView!!.addNode(taskTreeNode, draggedTaskNode)
         updateTreeNodeIndent(draggedTaskNode)
-        val treeNodeContentLayout = getTreeNodeRootView(mTaskTreeNode!!).getChildAt(1) as ViewGroup
+        val treeNodeContentLayout = getTreeNodeRootView(taskTreeNode!!).getChildAt(1) as ViewGroup
         val treeNodeCollapseIcon = treeNodeContentLayout.getChildAt(0)
         treeNodeCollapseIcon.visibility = View.VISIBLE
     }
@@ -174,9 +174,9 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
      * Remove the dragged tree node to be insert to other location later.
      */
     private fun removeDraggedNodeFromParent(draggedTaskNode: TreeNode) {
-        mTaskTreeView!!.removeNode(draggedTaskNode)
+        taskTreeView!!.removeNode(draggedTaskNode)
         if (draggedTaskNode.parent.children.isEmpty()) {
-            val treeNodeContentLayout = getTreeNodeRootView(draggedTaskNode).getChildAt(1) as ViewGroup
+            val treeNodeContentLayout = getTreeNodeRootView(draggedTaskNode.parent).getChildAt(1) as ViewGroup
             val treeNodeCollapseIcon = treeNodeContentLayout.getChildAt(0)
             treeNodeCollapseIcon.visibility = View.INVISIBLE
         }

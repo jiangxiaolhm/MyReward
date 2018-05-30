@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Created by Eric Hongming Lin on 28/05/18 3:01 AM
  * Copyright (c) 2018. All right reserved
  *
- * Last modified 20/05/18 2:40 AM
+ * Last modified 27/05/18 9:46 PM
  */
 
 package com.aquaowlet.myreward.data
@@ -29,7 +29,7 @@ data class Task(
         @ColumnInfo(name = "start_at") var startAt: Date? = null,
         @ColumnInfo(name = "due_at") var dueAt: Date? = null,
         @ColumnInfo(name = "repeatable") var repeatable: Boolean = false,
-        @ColumnInfo(name = "period") var period: Long = 0,
+        @ColumnInfo(name = "period") var period: Int = 0,
         @ColumnInfo(name = "priority") var priority: Int = 0,
         @ColumnInfo(name = "reward") var reward: String = "",
         @ColumnInfo(name = "punishment") var punishment: String = ""
@@ -46,6 +46,17 @@ data class Task(
     var parentId: String = ""
     @ColumnInfo(name = "index_in_parent")
     var indexInParent: Int = -1
+
+    constructor(name: String, reward: String, punishment: String, startAt: Date?, dueAt: Date?, repeatable: Boolean, period: Int, description: String) : this() {
+        this.name = name
+        this.reward = reward
+        this.punishment = punishment
+        this.startAt = startAt
+        this.dueAt = dueAt
+        this.repeatable = repeatable
+        this.period = period
+        this.description = description
+    }
 
     fun addChild(child: Task) {
         this.children.add(child)
@@ -67,5 +78,14 @@ data class Task(
         const val STATUS_TODO = 0
         const val STATUS_COMPLETE = 1
         const val STATUS_OVERDUE = 2
+
+        /**
+         * Repeatable task periods.
+         */
+        const val NOT_REPEATABLE = 0
+        const val EVERY_DAY = -1
+        const val EVERY_WEEK = -2
+        const val EVERY_MONTH = -3
+        const val EVERY_YEAR = -4
     }
 }

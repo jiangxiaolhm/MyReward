@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Created by Eric Hongming Lin on 28/05/18 3:01 AM
  * Copyright (c) 2018. All right reserved
  *
- * Last modified 5/05/18 6:53 PM
+ * Last modified 20/05/18 3:05 AM
  */
 
 package com.aquaowlet.myreward

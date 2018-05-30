@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
   ~ Copyright (c) 2018. All right reserved
   ~
-  ~ Last modified 19/05/18 5:21 PM
+  ~ Last modified 27/05/18 11:17 PM
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,7 +20,8 @@
         android:id="@+id/layout_tree_node_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@id/text_tree_node_indent"
+        android:layout_toEndOf="@+id/text_tree_node_indent"
+        android:layout_toRightOf="@id/text_tree_node_indent"
         android:background="@drawable/tree_node"
         android:gravity="center_vertical"
         android:minHeight="32dp">
@@ -39,13 +40,15 @@
             android:id="@+id/text_task_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/icon_collapse" />
+            android:layout_toEndOf="@id/icon_collapse"
+            android:layout_toRightOf="@id/icon_collapse" />
 
         <com.github.johnkil.print.PrintView
             android:id="@+id/icon_overflow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             app:iconColor="@color/color_icon"
             app:iconFont="fonts/holo-icon-font.ttf"
             app:iconSize="20dp"

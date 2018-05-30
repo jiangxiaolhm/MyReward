@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
   ~ Copyright (c) 2018. All right reserved
   ~
-  ~ Last modified 19/05/18 4:57 AM
+  ~ Last modified 20/05/18 3:05 AM
   -->
 
 <resources>
@@ -14,4 +14,9 @@
     <color name="color_tree_node_shadow">#3F553F</color>
     <color name="color_tree_node_drop_location_indicator">#FF0000</color>
     <color name="color_icon">#12558C</color>
+    <color name="color_button_confirm">#FF5555</color>
+    <color name="color_button_cancelled">#999999</color>
+    <!--<color name="color_edit_text_background_tint_alert">#FF5555</color>-->
+    <color name="color_alert">#FF5555</color>
+    <color name="color_hint_default">#9B9B9B</color>
 </resources>

@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:05 AM
+ * Created by Eric Hongming Lin on 28/05/18 3:01 AM
  * Copyright (c) 2018. All right reserved
  *
- * Last modified 20/05/18 2:26 AM
+ * Last modified 28/05/18 2:38 AM
  */
 
 package com.aquaowlet.myreward.taskstree
@@ -26,19 +26,22 @@ class TasksTreeFragment : Fragment() {
     private var tasksTreeViewModel: TasksTreeViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // TODO separate UI and logic
 
-        val rootView = inflater.inflate(R.layout.fragment_tasks_tree, null, false)
+        val rootView = inflater.inflate(R.layout.fragment_tasks_tree, container, false)
         val taskTreeContainerView = rootView.layout_tasks_tree_container
         val root = TreeNode.root()
         val tasksTreeView = TasksTreeViewHolder.getInstance(context!!).taskTreeView
+
         tasksTreeView.setRoot(root)
 
+        // Create the ViewModel.
         tasksTreeViewModel = ViewModelProviders.of(this).get(TasksTreeViewModel::class.java)
-
+        // When the LiveData change, update the tree view with the tasks and their children.
         tasksTreeViewModel!!.getAllParentChildren().observe(this, Observer {
+            // The queue is used to traverse the tree with level traversal.
             val queue = LinkedList<TreeNode?>()
             var newNode: TreeNode?
-
 
             // Clear the whole tree.
             while (root.children.isNotEmpty()) {

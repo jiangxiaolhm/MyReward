@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:27 PM
+ * Created by Eric Hongming Lin on 28/05/18 3:01 AM
  * Copyright (c) 2018. All right reserved
  *
- * Last modified 20/05/18 3:27 PM
+ * Last modified 21/05/18 4:29 PM
  */
 
 package com.aquaowlet.myreward.data.local
@@ -13,7 +13,7 @@ import android.os.AsyncTask
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.data.TaskCurrentAndChildren
 
-class TasksRepository(context: Context) {
+class TasksRepository private constructor(context: Context) {
 
     private val tasksDao: TasksDao
     private val mTaskCurrentAndChildrenDao: TaskCurrentAndChildrenDao
@@ -38,7 +38,6 @@ class TasksRepository(context: Context) {
 
     fun insert(task: Task) {
         InsertAsyncTask(tasksDao).execute(task)
-//        tasksDao.insertTask(task)
     }
 
     class InsertAsyncTask(dao: TasksDao) : AsyncTask<Task, Void, Void>() {
@@ -51,4 +50,19 @@ class TasksRepository(context: Context) {
 
     }
 
+    companion object {
+        @Volatile
+        private var INSTANCE: TasksRepository? = null
+
+        fun getInstance(context: Context): TasksRepository {
+            if (INSTANCE == null) {
+                synchronized(TasksRepository::class) {
+                    if (INSTANCE == null) {
+                        INSTANCE = TasksRepository(context)
+                    }
+                }
+            }
+            return INSTANCE!!
+        }
+    }
 }

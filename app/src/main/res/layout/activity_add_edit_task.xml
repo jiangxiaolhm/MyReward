@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
+  ~ Copyright (c) 2018. All right reserved
+  ~
+  ~ Last modified 28/05/18 2:53 AM
+  -->
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.aquaowlet.myreward.addedittask.AddEditTaskViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/content_margin"
+        android:orientation="vertical"
+        tools:context=".addedittask.AddEditTaskActivity">
+
+        <ScrollView
+            android:id="@+id/scroll_task_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_name" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_name"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_weight="1"
+                        android:hint="@string/add_edit_task_required_hint"
+                        android:inputType="textCapSentences"
+                        android:text="@{viewModel.name}" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_reward" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_reward"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_weight="1"
+                        android:hint="@string/add_edit_task_optional_hint"
+                        android:inputType="textCapSentences"
+                        android:text="@{viewModel.reward}" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_punishment" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_punishment"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_weight="1"
+                        android:hint="@string/add_edit_task_optional_hint"
+                        android:inputType="textCapSentences"
+                        android:text="@{viewModel.punishment}" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_start_at" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_start_at"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/add_edit_task_optional_hint"
+                        android:inputType="datetime"
+                        android:scrollHorizontally="true"
+                        android:text="@{viewModel.startAt}" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_due_at" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_due_at"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/add_edit_task_optional_hint"
+                        android:inputType="datetime"
+                        android:text="@{viewModel.dueAt}" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_repeatable" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox_repeatable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:checked="@{viewModel.repeatable}" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/row_add_edit_task_period"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_period" />
+
+                    <Spinner
+                        android:id="@+id/spinner_add_edit_task_period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:entries="@array/add_edit_task_period_entries" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_custom_period"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/activity_add_edit_task_row_height"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:hint="@string/add_edit_task_required_hint"
+                        android:inputType="number"
+                        android:text="@{viewModel.customPeriod}"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_edit_task_description" />
+
+                    <EditText
+                        android:id="@+id/text_add_edit_task_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/add_edit_task_optional_hint"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:maxLength="255"
+                        android:maxLines="5"
+                        android:minHeight="@dimen/activity_add_edit_task_row_height"
+                        android:text="@{viewModel.description}" />
+                </TableRow>
+
+            </TableLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.andexert.library.RippleView
+                android:id="@+id/cancel_action"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:rv_rippleDuration="100"
+                app:rv_zoom="true">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/color_button_cancelled"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/all_cancel_action"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </com.andexert.library.RippleView>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/confirm_action"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:rv_rippleDuration="100"
+                app:rv_zoom="true">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/color_button_confirm"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/all_confirm_action"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+            </com.andexert.library.RippleView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
+

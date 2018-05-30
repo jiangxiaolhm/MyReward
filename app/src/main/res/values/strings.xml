@@ -1,52 +1,50 @@
 <!--
-  ~ Created by Eric Hongming Lin on 20/05/18 3:05 AM
+  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
   ~ Copyright (c) 2018. All right reserved
   ~
-  ~ Last modified 19/05/18 5:19 PM
+  ~ Last modified 20/05/18 3:05 AM
   -->
 
 <resources>
     <string name="app_name">My Reward</string>
 
-    <!-- TODO: Remove or change this text_tree_node_indent text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Activity Titles -->
     <string name="title_new_task">New Task</string>
+    <string name="title_edit_task">Edit Task</string>
     <string name="title_all_tasks">All Tasks</string>
-    <string name="title_recent_tasks">Recent Tasks</string>
-    <string name="title_preference">Preference</string>
 
     <!-- New Task Activity -->
-    <string name="new_task_name">Name</string>
-    <string name="new_task_start_at">Start at</string>
-    <string name="new_task_due_at">Due at</string>
-    <string name="new_task_priority">Priority</string>
-    <string name="new_task_parent">Parent</string>
-    <string name="new_task_prerequisite">Prerequisite</string>
-    <string name="new_task_reward">Reward</string>
-    <string name="new_task_punishment">Punishment</string>
-    <string name="new_task_description">Description</string>
+    <string name="add_edit_task_name">Name</string>
+    <string name="add_edit_task_reward">Reward</string>
+    <string name="add_edit_task_punishment">Punishment</string>
+    <string name="add_edit_task_start_at">Start at</string>
+    <string name="add_edit_task_due_at">Due at</string>
+    <string name="add_edit_task_repeatable">Repeatable</string>
+    <string name="add_edit_task_period">Period</string>
+    <string name="add_edit_task_description">Description</string>
 
-    <string name="new_task_name_hint">New task name</string>
-    <string name="new_task_parent_hint">The parent task the task belongs to</string>
-    <string name="new_task_prerequisite_hint">The prerequisite task before the task starts</string>
-    <string name="new_task_reward_hint">The reward task name</string>
-    <string name="new_task_punishment_hint">The punishment task name</string>
-    <string name="new_task_description_hint">The details of the new task</string>
+    <string name="add_edit_task_required_hint">Required</string>
+    <string name="add_edit_task_optional_hint">Optional</string>
 
-    <!-- Priority Spinner Entries -->
-    <string-array name="priority_entries">
-        <!--<item>verbose</item>-->
-        <!--<item>debug</item>-->
-        <!--<item>warn</item>-->
-        <!--<item>info</item>-->
-        <!--<item>error</item>-->
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+    <string-array name="add_edit_task_period_entries">
+        <item>@string/add_edit_task_period_spinner_every_day</item>
+        <item>@string/add_edit_task_period_spinner_every_week</item>
+        <item>@string/add_edit_task_period_spinner_every_month</item>
+        <item>@string/add_edit_task_period_spinner_every_year</item>
+        <item>@string/add_edit_task_period_spinner_custom_days</item>
     </string-array>
+
+    <string name="add_edit_task_period_spinner_every_day">Every Day</string>
+    <string name="add_edit_task_period_spinner_every_week">Every Week</string>
+    <string name="add_edit_task_period_spinner_every_month">Every Month</string>
+    <string name="add_edit_task_period_spinner_every_year">Every Year</string>
+    <string name="add_edit_task_period_spinner_custom_days">Custom Days</string>
+
+    <string name="all_cancel_action">Cancel</string>
+    <string name="all_confirm_action">Confirm</string>
+
+    <string name="add_edit_task_date_validation_message">The date should be null or after today.</string>
+    <string name="add_edit_task_start_and_due_date_validation_message">The start date should be before the due date.</string>
+    <!--<string name="add_edit_task_due_date_validation_message">The due date should be empty or after today and the start date.</string>-->
 
 </resources>
