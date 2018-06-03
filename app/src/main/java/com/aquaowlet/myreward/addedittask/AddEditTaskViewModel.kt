@@ -7,30 +7,29 @@
 
 package com.aquaowlet.myreward.addedittask
 
+import android.app.AlertDialog
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import android.support.annotation.UiThread
 import android.util.Log
-import android.widget.EditText
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.data.local.TasksRepository
 import com.aquaowlet.myreward.util.Constant
 import com.aquaowlet.myreward.util.Util
 import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Exposes the data to be used in the add or edit task screen.
+ */
 class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
 
     private val tasksRepository = TasksRepository.getInstance(context)
 
-    val task = Task("xxx")
-
-    var name = ObservableField<String>("The name")
-    var reward = ObservableField<String>("Reward")
+    var name = ObservableField<String>()
+    var reward = ObservableField<String>()
     var punishment = ObservableField<String>()
     var startAt = ObservableField<String>()
     var dueAt = ObservableField<String>()
@@ -38,6 +37,9 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
     var customPeriod = ObservableField<String>()
     var description = ObservableField<String>()
 
+    /**
+     * Add a new task to the database.
+     */
     fun addTask() {
 
         var period = 0
@@ -47,7 +49,6 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
             } catch (e: NumberFormatException) {
                 Log.d(Constant.DEBUG, "The customPeriod can not be parsed to Int in AddEditTaskActivity.")
             }
-
         }
 
         val newTask = Task(
