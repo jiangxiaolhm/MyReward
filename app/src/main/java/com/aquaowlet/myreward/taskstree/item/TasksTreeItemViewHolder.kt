@@ -1,15 +1,17 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 27/05/18 11:20 PM
+ * Last modified 4/06/18 2:30 AM
  */
 
 package com.aquaowlet.myreward.taskstree.item
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,6 @@ import android.widget.Toast
 import com.aquaowlet.myreward.R
 import com.aquaowlet.myreward.addedittask.AddEditTaskActivity
 import com.aquaowlet.myreward.data.Task
-import com.aquaowlet.myreward.dialog.DialogActivity
 import com.aquaowlet.myreward.taskdetails.TaskDetailsActivity
 import com.aquaowlet.myreward.taskstree.TasksTreeViewModel
 import com.aquaowlet.myreward.util.Constant
@@ -38,6 +39,7 @@ class TasksTreeItemViewHolder(
         tView = tasksTreeViewModel.tasksTreeView
     }
 
+    @SuppressLint("InflateParams")
     @Suppress("DEPRECATION")
     override fun createNodeView(node: TreeNode?, value: Task?): View {
 
@@ -49,11 +51,26 @@ class TasksTreeItemViewHolder(
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.item_task, null, false)
 
+        when (tasksTreeViewModel.filterId) {
+            R.id.todo_filter -> {
+                if (value.status != Task.STATUS_TODO || value.archived) {
+                    view.visibility = View.GONE
+                }
+            }
+            R.id.unarchived_filter -> {
+                if (value.archived) {
+                    view.visibility = View.GONE
+                }
+            }
+        }
+
         view.swipe.showMode = SwipeLayout.ShowMode.LayDown
         view.swipe.addDrag(SwipeLayout.DragEdge.Right, null)
 
         when (value.status) {
             Task.STATUS_TODO -> {
+
+                view.icon_complete.visibility = View.GONE
                 view.swipe.addDrag(SwipeLayout.DragEdge.Left, view.bottom_view)
                 view.icon_to_complete.setOnClickListener {
                     view.swipe.close()
@@ -62,11 +79,35 @@ class TasksTreeItemViewHolder(
                 }
             }
             Task.STATUS_COMPLETE -> {
+                view.icon_complete.visibility = View.VISIBLE
                 view.icon_complete.iconText = context.getString(R.string.ic_check_circle_outline)
             }
             Task.STATUS_OVERDUE -> {
+                view.icon_complete.visibility = View.VISIBLE
                 view.icon_complete.iconText = context.getString(R.string.ic_info_outline)
                 view.icon_complete.iconColor = ColorStateList.valueOf(context.resources.getColor(R.color.color_alert))
+            }
+        }
+
+        when (value.type) {
+            Task.TYPE_TASK -> {
+                view.icon_reward.visibility = if (value.status == Task.STATUS_TODO && value.reward.isNotEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                view.icon_punishment.visibility = if (value.status == Task.STATUS_TODO && value.punishment.isNotEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+            Task.TYPE_REWARD -> {
+
+            }
+            Task.TYPE_PUNISHMENT -> {
+
             }
         }
 
@@ -87,6 +128,12 @@ class TasksTreeItemViewHolder(
         }
 
         view.text_task_name.text = value.name
+
+        view.icon_archived.visibility = if (value.archived) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
 
         view.icon_overflow.setOnClickListener {
             showPopupMenu(it)
@@ -129,6 +176,7 @@ class TasksTreeItemViewHolder(
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.menu_tree_node_overflow)
         popupMenu.setOnMenuItemClickListener {
+
             var result = true
             when (it.itemId) {
                 R.id.view_details_action -> {
@@ -144,23 +192,47 @@ class TasksTreeItemViewHolder(
                     context.startActivity(intent)
                 }
                 R.id.archive_action -> {
-                    val intent = Intent(context, DialogActivity::class.java)
-                    intent.putExtra(Constant.INTENT_TYPE, Constant.INTENT_CONFIRM_TASK)
-                    intent.putExtra(Constant.INTENT_TASK_ID, (mNode.value as Task).id)
-                    intent.putExtra(Constant.INTENT_DIALOG_TITLE, context.getString(R.string.alert_dialog_archive_task_title))
-                    intent.putExtra(Constant.INTENT_DIALOG_MESSAGE, context.getString(R.string.alert_dialog_archive_task_message))
-                    intent.putExtra(Constant.INTENT_DIALOG_ICON, context.getString(R.string.ic_archive))
-                    context.startActivity(intent)
+
+                    tasksTreeViewModel.archive(mNode.value as Task, true)
+                    var undo = false
+                    val snackBar = Snackbar.make(view, context.getString(R.string.alert_dialog_archive_task_message), Snackbar.LENGTH_INDEFINITE)
+                    snackBar.setAction(context.getString(R.string.undo), {
+                        undo = true
+                        snackBar.dismiss()
+                    }).addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            if (undo) {
+                                tasksTreeViewModel.archive(mNode.value as Task, false)
+                            }
+                        }
+                    }).show()
+
+                    Thread(Runnable {
+                        Thread.sleep(5000)
+                        snackBar.dismiss()
+                    }).start()
 
                 }
                 R.id.delete_action -> {
-                    val intent = Intent(context, DialogActivity::class.java)
-                    intent.putExtra(Constant.INTENT_TYPE, Constant.INTENT_CONFIRM_TASK)
-                    intent.putExtra(Constant.INTENT_TASK_ID, (mNode.value as Task).id)
-                    intent.putExtra(Constant.INTENT_DIALOG_TITLE, context.getString(R.string.alert_dialog_delete_task_title))
-                    intent.putExtra(Constant.INTENT_DIALOG_MESSAGE, context.getString(R.string.alert_dialog_delete_task_message))
-                    intent.putExtra(Constant.INTENT_DIALOG_ICON, context.getString(R.string.ic_delete))
-                    context.startActivity(intent)
+
+                    tasksTreeViewModel.delete(mNode.value as Task)
+                    var undo = false
+                    val snackBar = Snackbar.make(view, context.getString(R.string.alert_dialog_delete_task_message), Snackbar.LENGTH_INDEFINITE)
+                    snackBar.setAction(context.getString(R.string.undo), {
+                        undo = true
+                        snackBar.dismiss()
+                    }).addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            if (undo) {
+                                tasksTreeViewModel.restore(mNode.value as Task)
+                            }
+                        }
+                    }).show()
+
+                    Thread(Runnable {
+                        Thread.sleep(5000)
+                        snackBar.dismiss()
+                    }).start()
                 }
                 else -> {
                     Log.e(Constant.ERROR, "Unknown menu item clicked.")

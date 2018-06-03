@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
-  ~ Copyright (c) 2018. All right reserved
+  ~ Created by Eric Hongming Lin on 4/06/18 2:51 AM
+  ~ Copyright (c) 4/06/18 2:51 AM. All right reserved
   ~
-  ~ Last modified 28/05/18 2:53 AM
--->
+  ~ Last modified 4/06/18 2:45 AM
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aquaowlet.myreward">
-
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -19,16 +17,11 @@
         <activity android:name=".taskstree.TasksTreeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".addedittask.AddEditTaskActivity" />
         <activity android:name=".taskdetails.TaskDetailsActivity" />
-        <activity
-            android:name=".dialog.DialogActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
     </application>
 
 </manifest>

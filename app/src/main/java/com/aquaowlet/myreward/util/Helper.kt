@@ -1,3 +1,10 @@
+/*
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
+ *
+ * Last modified 4/06/18 2:40 AM
+ */
+
 package com.aquaowlet.myreward.util
 
 import android.util.Log
@@ -5,7 +12,10 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-object Util {
+/**
+ * Provide helper function to process data.
+ */
+object Helper {
 
     private val simpleDateFormat = SimpleDateFormat(Constant.DATETIME_FORMAT, Locale.ENGLISH)
 

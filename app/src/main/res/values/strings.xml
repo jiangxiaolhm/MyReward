@@ -1,8 +1,8 @@
 <!--
-  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
-  ~ Copyright (c) 2018. All right reserved
+  ~ Created by Eric Hongming Lin on 4/06/18 2:51 AM
+  ~ Copyright (c) 4/06/18 2:51 AM. All right reserved
   ~
-  ~ Last modified 20/05/18 3:05 AM
+  ~ Last modified 4/06/18 2:21 AM
   -->
 
 <resources>
@@ -22,6 +22,15 @@
     <string name="edit">Edit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="undo">UNDO</string>
+
+    <!-- Tasks Tree Activity Action Bar Menu -->
+    <string name="menu_tasks_tree_filter">Filter</string>
+
+    <!-- Task Filter Menu -->
+    <string name="menu_task_filter_todo">TODO Tasks Only</string>
+    <string name="menu_task_filter_unarchived">Current Tasks</string>
+    <string name="menu_task_filter_archived">Archived Tasks</string>
 
     <!-- Tasks Tree Node Overflow Menu -->
     <string name="menu_tree_node_overflow_view_details">View Details</string>
@@ -30,12 +39,8 @@
     <string name="menu_tree_node_overflow_archive">Archive</string>
 
     <!-- Alert Dialog -->
-    <string name="alert_dialog_archive_task_title">Archive Task</string>
-    <string name="alert_dialog_archive_task_message">Are you sure you want to archive the task and its children?</string>
-    <string name="alert_dialog_archive_task_complete_message">The task and its children is archived.</string>
-    <string name="alert_dialog_delete_task_title">Delete Task</string>
-    <string name="alert_dialog_delete_task_message">Are you sure you want to delete the task and its children?</string>
-    <string name="alert_dialog_delete_task_complete_message">The task and its children is deleted.</string>
+    <string name="alert_dialog_archive_task_message">The task and its children are archived.</string>
+    <string name="alert_dialog_delete_task_message">The task and its children are deleted.</string>
 
     <!-- Task Attributes -->
     <string name="task_parent">Parent</string>

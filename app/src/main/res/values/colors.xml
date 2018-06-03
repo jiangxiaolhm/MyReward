@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Created by Eric Hongming Lin on 28/05/18 3:01 AM
-  ~ Copyright (c) 2018. All right reserved
+  ~ Created by Eric Hongming Lin on 4/06/18 2:51 AM
+  ~ Copyright (c) 4/06/18 2:51 AM. All right reserved
   ~
-  ~ Last modified 20/05/18 3:05 AM
+  ~ Last modified 4/06/18 12:09 AM
   -->
 
 <resources>
@@ -17,5 +17,6 @@
     <color name="color_button_confirm">#FF5555</color>
     <color name="color_button_cancelled">#999999</color>
     <color name="color_alert">#FF5555</color>
+    <color name="color_good">#FFCC55</color>
     <color name="color_hint_default">#9B9B9B</color>
 </resources>

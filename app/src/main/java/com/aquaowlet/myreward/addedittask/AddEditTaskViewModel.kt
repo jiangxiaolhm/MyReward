@@ -1,26 +1,20 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:07 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 28/05/18 3:07 AM
+ * Last modified 4/06/18 2:40 AM
  */
 
 package com.aquaowlet.myreward.addedittask
 
-import android.app.AlertDialog
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import android.databinding.ObservableInt
-import android.support.annotation.UiThread
-import android.util.Log
 import com.aquaowlet.myreward.R
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.data.local.TasksRepository
-import com.aquaowlet.myreward.util.Constant
-import com.aquaowlet.myreward.util.Util
-import java.text.ParseException
+import com.aquaowlet.myreward.util.Helper
 import java.util.*
 
 /**
@@ -54,8 +48,8 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
         name.set(task?.name)
         reward.set(task?.reward)
         punishment.set(task?.punishment)
-        startAt.set(Util.formatDateToString(task?.startAt))
-        dueAt.set(Util.formatDateToString(task?.dueAt))
+        startAt.set(Helper.formatDateToString(task?.startAt))
+        dueAt.set(Helper.formatDateToString(task?.dueAt))
         if (task != null) {
             repeatable.set(task.repeatable)
             if (task.period > 0) {
@@ -70,14 +64,14 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
      */
     fun addTask() {
 
-        val periodInt = Util.parseStringToIntOrZero(customPeriod.get()!!)
+        val periodInt = Helper.parseStringToIntOrZero(customPeriod.get()!!)
 
         val newTask = Task(
                 name.get()!!,
                 reward.get()!!,
                 punishment.get()!!,
-                Util.parseStringToDate(startAt.get()!!),
-                Util.parseStringToDate(dueAt.get()!!),
+                Helper.parseStringToDate(startAt.get()!!),
+                Helper.parseStringToDate(dueAt.get()!!),
                 repeatable.get(),
                 periodInt,
                 description.get()!!
@@ -96,8 +90,8 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
         task!!.name = name.get()!!
         task!!.reward = reward.get()!!
         task!!.punishment = punishment.get()!!
-        task!!.startAt = Util.parseStringToDate(startAt.get()!!)
-        task!!.dueAt = Util.parseStringToDate(dueAt.get()!!)
+        task!!.startAt = Helper.parseStringToDate(startAt.get()!!)
+        task!!.dueAt = Helper.parseStringToDate(dueAt.get()!!)
         task!!.repeatable = repeatable.get()
         when (selectedPeriod.get()!!) {
             getApplication<Application>().getString(R.string.task_period_every_day) -> {
@@ -113,7 +107,7 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
                 task!!.period = Task.EVERY_YEAR
             }
             getApplication<Application>().getString(R.string.task_period_custom_days) -> {
-                task!!.period = Util.parseStringToIntOrZero(customPeriod.get()!!)
+                task!!.period = Helper.parseStringToIntOrZero(customPeriod.get()!!)
             }
         }
         task!!.description = description.get()!!
@@ -129,20 +123,6 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     /**
-     * The date should be null or after today.
-     */
-    fun validateDate(string: String): Boolean {
-
-        val date = Util.parseStringToDate(string)
-
-        if (date != null && date.before(Date())) {
-            return false
-        }
-
-        return true
-    }
-
-    /**
      * The start date should not be after the due date.
      */
     fun validateStartAndDueDate(startAtString: String, dueAtString: String): Boolean {
@@ -152,8 +132,8 @@ class AddEditTaskViewModel(context: Application) : AndroidViewModel(context) {
 
         if (startAtString.isNotEmpty() && dueAtString.isNotEmpty()) {
 
-            startDate = Util.parseStringToDate(startAtString)
-            dueDate = Util.parseStringToDate(dueAtString)
+            startDate = Helper.parseStringToDate(startAtString)
+            dueDate = Helper.parseStringToDate(dueAtString)
 
             if (startDate != null && dueDate != null) {
                 if (startDate.after(dueDate)) {

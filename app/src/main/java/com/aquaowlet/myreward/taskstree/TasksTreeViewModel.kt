@@ -1,17 +1,16 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 28/05/18 2:50 AM
+ * Last modified 4/06/18 2:21 AM
  */
 
 package com.aquaowlet.myreward.taskstree
 
-import android.app.AlertDialog
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.content.Context
+import com.aquaowlet.myreward.R
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.data.TaskCurrentAndChildren
 import com.aquaowlet.myreward.data.local.TasksRepository
@@ -31,6 +30,8 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
     private val rootNode = TreeNode.root()
     val tasksTreeView = AndroidTreeView(context)
 
+    var filterId: Int = R.id.unarchived_filter
+
     init {
         allCurrentAndChildren = tasksRepository.getAllCurrentAndChildren()
         tasksTreeView.setRoot(rootNode)
@@ -41,13 +42,23 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
      * Complete a task or set the task overdue.
      */
     fun complete(task: Task) {
-
+        updateTreeView()
         if (task.dueAt != null && task.dueAt!!.before(Date())) {
             // The task is complete but overdue.
             task.status = Task.STATUS_OVERDUE
+            if (task.punishment.isNotEmpty()) {
+                val punishment = Task(task.punishment)
+                punishment.type = Task.TYPE_PUNISHMENT
+                tasksRepository.insert(punishment)
+            }
         } else {
             // The task has not due date or complete before due date.
             task.status = Task.STATUS_COMPLETE
+            if (task.reward.isNotEmpty()) {
+                val reward = Task(task.reward)
+                reward.type = Task.TYPE_REWARD
+                tasksRepository.insert(reward)
+            }
         }
         tasksRepository.update(task)
     }
@@ -55,15 +66,15 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
     /**
      * Archive a task and its children.
      */
-    fun archive(task: Task) {
-
+    fun archive(task: Task, archived: Boolean) {
+        updateTreeView()
         val queue = LinkedList<Task>()
         queue.add(task)
 
         while (queue.isNotEmpty()) {
-            queue.first.archived = true
+            queue.first.archived = archived
             queue.addAll(queue.first.children)
-//            tasksRepository.update(queue.first)
+            tasksRepository.update(queue.first)
             queue.removeFirst()
         }
     }
@@ -72,13 +83,28 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
      * Delete a task and its children.
      */
     fun delete(task: Task) {
-
+        updateTreeView()
         val queue = LinkedList<Task>()
         queue.add(task)
 
         while (queue.isNotEmpty()) {
             queue.addAll(queue.first.children)
             tasksRepository.delete(queue.first)
+            queue.removeFirst()
+        }
+    }
+
+    /**
+     * Restore a task and its children.
+     */
+    fun restore(task: Task) {
+        updateTreeView()
+        val queue = LinkedList<Task>()
+        queue.add(task)
+
+        while (queue.isNotEmpty()) {
+            queue.addAll(queue.first.children)
+            tasksRepository.insert(queue.first)
             queue.removeFirst()
         }
     }
@@ -120,6 +146,7 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
                     // Add current node to the queue to process its children recursively.
                     queue.addLast(newNode)
                 }
+
                 // Add the tree node to the root of the tree view.
                 tasksTreeView.addNode(rootNode, newNode)
             }
@@ -182,6 +209,18 @@ class TasksTreeViewModel(context: Application) : AndroidViewModel(context) {
             }
             queue.removeFirst()
         }
+    }
+
+    /**
+     * Change filter and update the tree view.
+     */
+    fun changeFilter(filterId: Int) {
+
+        if (this.filterId != filterId) {
+            this.filterId = filterId
+            updateTreeView()
+        }
+
     }
 
 }

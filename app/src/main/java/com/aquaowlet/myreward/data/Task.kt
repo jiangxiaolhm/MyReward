@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 27/05/18 9:46 PM
+ * Last modified 4/06/18 2:28 AM
  */
 
 package com.aquaowlet.myreward.data
@@ -88,7 +88,6 @@ data class Task(
         /**
          * Repeatable task periods.
          */
-        const val NOT_REPEATABLE = 0
         const val EVERY_DAY = -1
         const val EVERY_WEEK = -2
         const val EVERY_MONTH = -3

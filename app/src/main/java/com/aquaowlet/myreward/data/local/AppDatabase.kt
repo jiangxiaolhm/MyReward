@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 27/05/18 10:19 PM
+ * Last modified 4/06/18 2:28 AM
  */
 
 package com.aquaowlet.myreward.data.local
@@ -33,7 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
         private val roomDatabaseCallback = object : RoomDatabase.Callback() {
-
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
                 PopulateDbAsync(INSTANCE!!).execute()

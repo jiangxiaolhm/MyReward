@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 20/05/18 3:05 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 20/05/18 2:33 AM
+ * Last modified 3/06/18 10:43 PM
  */
 
 apply plugin: 'com.android.application'
@@ -65,6 +65,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "com.android.support:design:27.1.1"
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 

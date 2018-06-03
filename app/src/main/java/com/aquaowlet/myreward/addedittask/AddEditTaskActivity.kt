@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 28/05/18 2:54 AM
+ * Last modified 4/06/18 2:40 AM
  */
 
 package com.aquaowlet.myreward.addedittask
@@ -25,13 +25,12 @@ import java.util.*
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
 import android.widget.EditText
 import android.widget.Toast
 import com.android.databinding.library.baseAdapters.BR
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.databinding.ActivityAddEditTaskBinding
-import com.aquaowlet.myreward.util.Util
+import com.aquaowlet.myreward.util.Helper
 
 /**
  * Display a task form to add a new task or edit a exist task.
@@ -221,26 +220,6 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         var isValid = true
 
-        if (binding.viewModel!!.validateDate(text_task_start_at.text.toString())) {
-            clearAlertTint(text_task_start_at)
-            text_task_start_at.hint = getString(R.string.task_optional_hint)
-        } else {
-            setAlertTint(text_task_start_at)
-            binding.viewModel!!.startAt.set("")
-            text_task_start_at.hint = getString(R.string.task_date_validation_message)
-            isValid = false
-        }
-
-        if (binding.viewModel!!.validateDate(text_task_due_at.text.toString())) {
-            clearAlertTint(text_task_due_at)
-            text_task_due_at.hint = getString(R.string.task_optional_hint)
-        } else {
-            setAlertTint(text_task_due_at)
-            binding.viewModel!!.dueAt.set("")
-            text_task_due_at.hint = getString(R.string.task_date_validation_message)
-            isValid = false
-        }
-
         if (text_task_start_at.text.toString().isNotEmpty() && text_task_due_at.text.toString().isNotEmpty()) {
             if (binding.viewModel!!.validateStartAndDueDate(text_task_start_at.text.toString(), text_task_due_at.text.toString())) {
                 clearAlertTint(text_task_start_at)
@@ -332,7 +311,7 @@ class AddEditTaskActivity : AppCompatActivity() {
 
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 cal.set(Calendar.MINUTE, minute)
-                editText.setText(Util.formatDateToString(cal.time))
+                editText.setText(Helper.formatDateToString(cal.time))
             }
             TimePickerDialog(
                     this@AddEditTaskActivity,

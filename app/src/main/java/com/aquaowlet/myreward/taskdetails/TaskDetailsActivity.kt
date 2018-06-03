@@ -1,3 +1,10 @@
+/*
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
+ *
+ * Last modified 4/06/18 12:49 AM
+ */
+
 package com.aquaowlet.myreward.taskdetails
 
 import android.arch.lifecycle.ViewModelProviders
@@ -5,6 +12,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.android.databinding.library.baseAdapters.BR
 import com.aquaowlet.myreward.R
 import com.aquaowlet.myreward.addedittask.AddEditTaskActivity
@@ -34,11 +42,16 @@ class TaskDetailsActivity : AppCompatActivity() {
         return_action.setOnRippleCompleteListener {
             finish()
         }
-        edit_action.setOnRippleCompleteListener {
-            val intent = Intent(this@TaskDetailsActivity, AddEditTaskActivity::class.java)
-            intent.putExtra(Constant.INTENT_TYPE, Constant.INTENT_EDIT_TASK)
-            intent.putExtra(Constant.INTENT_TASK, binding.viewModel!!.task!!)
-            startActivityForResult(intent, Constant.INTENT_EDIT_TASK_REQUEST_CODE)
+
+        if (binding.viewModel!!.task!!.status == Task.STATUS_TODO) {
+            edit_action.setOnRippleCompleteListener {
+                val intent = Intent(this@TaskDetailsActivity, AddEditTaskActivity::class.java)
+                intent.putExtra(Constant.INTENT_TYPE, Constant.INTENT_EDIT_TASK)
+                intent.putExtra(Constant.INTENT_TASK, binding.viewModel!!.task!!)
+                startActivityForResult(intent, Constant.INTENT_EDIT_TASK_REQUEST_CODE)
+            }
+        } else {
+            edit_action.visibility = View.GONE
         }
     }
 

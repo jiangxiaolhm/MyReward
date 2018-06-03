@@ -1,30 +1,27 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 28/05/18 2:38 AM
+ * Last modified 4/06/18 2:38 AM
  */
 
 package com.aquaowlet.myreward.taskstree
 
-import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
+import android.widget.PopupMenu
 import com.aquaowlet.myreward.R
 import kotlinx.android.synthetic.main.fragment_tasks_tree.view.*
 
 /**
- * Present the tasks tree view.
+ * Present the tasks tree view and setup the ViewModel to transfer data from database to the tree view.
  */
 class TasksTreeFragment : Fragment() {
 
-    private var tasksTreeViewModel: TasksTreeViewModel? = null
+    var tasksTreeViewModel: TasksTreeViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -43,15 +40,13 @@ class TasksTreeFragment : Fragment() {
 
         taskTreeContainerView.addView(tasksTreeViewModel!!.tasksTreeView.view)
 
-
-
-
         return rootView
     }
 
     override fun onPause() {
         super.onPause()
-
         tasksTreeViewModel!!.updateTreeView()
     }
+
+
 }

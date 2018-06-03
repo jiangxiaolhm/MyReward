@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 28/05/18 12:13 AM
+ * Last modified 4/06/18 2:32 AM
  */
 
 package com.aquaowlet.myreward.taskstree.item
@@ -13,18 +13,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.aquaowlet.myreward.R
-import com.aquaowlet.myreward.taskstree.TasksTreeViewModel
 import com.aquaowlet.myreward.util.Constant
 import com.unnamed.b.atv.model.TreeNode
 import com.unnamed.b.atv.view.AndroidTreeView
 import com.unnamed.b.atv.view.TreeNodeWrapperView
 
 
+/**
+ * Process the event when the task tree node is dragged and dropped.
+ */
 class TasksTreeItemDragEventListener(
         private val taskTreeNode: TreeNode
 ) : View.OnDragListener {
 
-    //    private val taskTreeNode = taskNode
     private val taskTreeView: AndroidTreeView = taskTreeNode.viewHolder.treeView
 
     companion object {

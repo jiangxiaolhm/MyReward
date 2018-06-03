@@ -1,8 +1,8 @@
 /*
- * Created by Eric Hongming Lin on 28/05/18 3:01 AM
- * Copyright (c) 2018. All right reserved
+ * Created by Eric Hongming Lin on 4/06/18 2:51 AM
+ * Copyright (c) 4/06/18 2:51 AM. All right reserved
  *
- * Last modified 21/05/18 4:29 PM
+ * Last modified 4/06/18 2:28 AM
  */
 
 package com.aquaowlet.myreward.data.local
@@ -28,14 +28,6 @@ class TasksRepository private constructor(context: Context) {
         allTasks = tasksDao.getAllTasks()
         taskCurrentAndChildrenDao = appDatabase.taskCurrentAndChildren()
         allCurrentAndChildren = taskCurrentAndChildrenDao.getTaskCurrentAndChildren()
-    }
-
-    fun getTaskById(id: String): LiveData<Task?> {
-        return tasksDao.getTaskById(id)
-    }
-
-    fun getAllTasks(): LiveData<List<Task>> {
-        return allTasks
     }
 
     /**

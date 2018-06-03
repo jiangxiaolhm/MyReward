@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Eric Hongming Lin on 4/06/18 2:51 AM
+  ~ Copyright (c) 4/06/18 2:51 AM. All right reserved
+  ~
+  ~ Last modified 4/06/18 12:56 AM
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/filter_action"
+        android:icon="@drawable/ic_filter_action"
+        android:title="@string/menu_tasks_tree_filter"
+        app:showAsAction="always" />
+</menu>
