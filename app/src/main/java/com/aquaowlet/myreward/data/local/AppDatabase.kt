@@ -50,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
             override fun doInBackground(vararg params: Void): Void? {
                 dao.deleteTasks()
 
-                val parent1 = Task("parent 1", "Nintendo Switch", "", null, null, true, 20, "It is a mock task.")
+                val parent1 = Task("parent 1", "Nintendo Switch", "", Date(), Date(), true, 20, "It is a mock task.")
                 val parent2 = Task("parent 2")
                 val child1 = Task("child 1")
                 val child2 = Task("child 2")

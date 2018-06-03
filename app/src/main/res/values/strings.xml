@@ -67,6 +67,7 @@
     <string name="task_period_every_month">Every Month</string>
     <string name="task_period_every_year">Every Year</string>
     <string name="task_period_custom_days">Custom Days</string>
+    <string name="task_period_days_suffix">&#160;Day(s)</string>
 
     <!-- Validation Messages -->
     <string name="task_complete_message">The task is complete.</string>
