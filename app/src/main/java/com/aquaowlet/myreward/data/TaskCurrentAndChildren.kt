@@ -10,6 +10,9 @@ package com.aquaowlet.myreward.data
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Relation
 
+/**
+ * A task could have 0 to many child tasks.
+ */
 class TaskCurrentAndChildren(
         @Embedded
         var current: Task = Task(),

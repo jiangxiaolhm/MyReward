@@ -15,18 +15,23 @@ import android.content.Context
 import com.aquaowlet.myreward.data.Task
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.os.AsyncTask
+import java.util.*
 
-
-@Database(entities = arrayOf(Task::class), version = 1)
+/**
+ * Store the app data in the room database.
+ */
+@Database(entities = [(Task::class)], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tasksDao(): TasksDao
     abstract fun taskCurrentAndChildren(): TaskCurrentAndChildrenDao
 
     companion object {
+
+        private var IS_DEBUGGING = true
+
         @Volatile
         private var INSTANCE: AppDatabase? = null
-
         private val roomDatabaseCallback = object : RoomDatabase.Callback() {
 
             override fun onOpen(db: SupportSQLiteDatabase) {
@@ -35,21 +40,28 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Mock data for presentation.
+         */
         private class PopulateDbAsync internal constructor(db: AppDatabase) : AsyncTask<Void, Void, Void>() {
 
             private val dao: TasksDao = db.tasksDao()
-            /**
-             * Mock data
-             */
+
             override fun doInBackground(vararg params: Void): Void? {
                 dao.deleteTasks()
 
-                val parent1 = Task("parent 1")
+                val parent1 = Task("parent 1", "Nintendo Switch", "", null, null, true, 20, "It is a mock task.")
                 val parent2 = Task("parent 2")
                 val child1 = Task("child 1")
                 val child2 = Task("child 2")
                 val child3 = Task("child 3")
                 val child4 = Task("child 4")
+
+                child1.status = Task.STATUS_TODO
+                child2.status = Task.STATUS_COMPLETE
+                child3.status = Task.STATUS_OVERDUE
+
+                parent1.expanded = true
 
                 parent1.indexInParent = 1
                 parent2.indexInParent = 0
@@ -60,27 +72,38 @@ abstract class AppDatabase : RoomDatabase() {
                 child3.indexInParent = 1
                 child4.indexInParent = 0
 
-                dao.insertTask(parent1)
-                dao.insertTask(parent2)
-                dao.insertTask(child1)
-                dao.insertTask(child2)
-                dao.insertTask(child3)
-                dao.insertTask(child4)
+                dao.insert(parent1)
+                dao.insert(parent2)
+                dao.insert(child1)
+                dao.insert(child2)
+                dao.insert(child3)
+                dao.insert(child4)
 
                 return null
             }
         }
 
+        /**
+         * Get database instance with singleton pattern.
+         */
         fun getInstance(context: Context): AppDatabase {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class) {
                     if (INSTANCE == null) {
-                        INSTANCE = Room
-                                .inMemoryDatabaseBuilder(context.applicationContext, AppDatabase::class.java)
-                                //.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app_db")
-                                .allowMainThreadQueries()
-                                .addCallback(roomDatabaseCallback)
-                                .build()
+
+                        INSTANCE = if (IS_DEBUGGING) {
+                            Room
+                                    .inMemoryDatabaseBuilder(context.applicationContext, AppDatabase::class.java)
+                                    .allowMainThreadQueries()
+                                    .addCallback(roomDatabaseCallback)
+                                    .build()
+                        } else {
+                            Room
+                                    .databaseBuilder(context.applicationContext, AppDatabase::class.java, "app_db")
+                                    .allowMainThreadQueries()
+                                    .addCallback(roomDatabaseCallback)
+                                    .build()
+                        }
                     }
                 }
             }

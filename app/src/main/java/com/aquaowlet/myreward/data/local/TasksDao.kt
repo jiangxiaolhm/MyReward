@@ -11,27 +11,51 @@ import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.aquaowlet.myreward.data.Task
 
+/**
+ * Interact with database to manage task data.
+ */
 @Dao
 interface TasksDao {
 
+    /**
+     * Get all tasks.
+     */
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM Tasks WHERE id = :taskId")
-    fun getTaskById(taskId: String): Task?
+    /**
+     * Get a task by its id.
+     */
+    @Query("SELECT * FROM Tasks WHERE id = :id")
+    fun getTaskById(id: String): LiveData<Task?>
 
+    /**
+     * Insert a new task or replace with the new task.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTask(task: Task)
+    fun insert(task: Task)
 
+    /**
+     * Update a exist task.
+     */
     @Update
-    fun updateTask(task: Task)
+    fun update(task: Task)
 
+    /**
+     * Delete a task.
+     */
     @Delete
-    fun deleteTask(task: Task)
+    fun delete(task: Task)
 
-    @Query("DELETE FROM Tasks WHERE id = :taskId")
-    fun deleteTaskById(taskId: String)
+    /**
+     * Delete a task by a id.
+     */
+    @Query("DELETE FROM Tasks WHERE id = :id")
+    fun deleteTaskById(id: String)
 
+    /**
+     * Delete all tasks.
+     */
     @Query("DELETE FROM Tasks")
     fun deleteTasks()
 }

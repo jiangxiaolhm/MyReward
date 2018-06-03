@@ -8,6 +8,7 @@
 package com.aquaowlet.myreward.data
 
 import android.arch.persistence.room.*
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,23 +18,23 @@ import kotlin.collections.ArrayList
 @Entity(tableName = "tasks")
 @ForeignKey(
         entity = Task::class,
-        parentColumns = arrayOf("id"),      // Parent entity
-        childColumns = arrayOf("parent_id") // Current entity
+        parentColumns = ["id"],      // Parent entity
+        childColumns = ["parent_id"] // Current entity
 )
 data class Task(
         @ColumnInfo(name = "name") var name: String = "",
-        @ColumnInfo(name = "description") var description: String = "",
-        @ColumnInfo(name = "type") var type: Int = TYPE_TASK,
-        @ColumnInfo(name = "archived") var archived: Boolean = false,
-        @ColumnInfo(name = "status") var status: Int = STATUS_TODO,
+        @ColumnInfo(name = "reward") var reward: String = "",
+        @ColumnInfo(name = "punishment") var punishment: String = "",
         @ColumnInfo(name = "start_at") var startAt: Date? = null,
         @ColumnInfo(name = "due_at") var dueAt: Date? = null,
         @ColumnInfo(name = "repeatable") var repeatable: Boolean = false,
         @ColumnInfo(name = "period") var period: Int = 0,
-        @ColumnInfo(name = "priority") var priority: Int = 0,
-        @ColumnInfo(name = "reward") var reward: String = "",
-        @ColumnInfo(name = "punishment") var punishment: String = ""
-) {
+        @ColumnInfo(name = "description") var description: String = "",
+        @ColumnInfo(name = "type") var type: Int = TYPE_TASK,
+        @ColumnInfo(name = "status") var status: Int = STATUS_TODO,
+        @ColumnInfo(name = "expanded") var expanded: Boolean = false,
+        @ColumnInfo(name = "archived") var archived: Boolean = false
+) : Serializable {
 
     @PrimaryKey
     @ColumnInfo(name = "id")
@@ -45,8 +46,9 @@ data class Task(
     @ColumnInfo(name = "parent_id")
     var parentId: String = ""
     @ColumnInfo(name = "index_in_parent")
-    var indexInParent: Int = -1
+    var indexInParent: Int = Int.MAX_VALUE
 
+    @Ignore
     constructor(name: String, reward: String, punishment: String, startAt: Date?, dueAt: Date?, repeatable: Boolean, period: Int, description: String) : this() {
         this.name = name
         this.reward = reward
@@ -58,10 +60,14 @@ data class Task(
         this.description = description
     }
 
+    /**
+     * Add a child task to current task.
+     */
     fun addChild(child: Task) {
         this.children.add(child)
         child.parent = this
         child.parentId = this.id
+        child.indexInParent = this.children.size - 1
     }
 
     companion object {

@@ -9,51 +9,77 @@ package com.aquaowlet.myreward.data.local
 
 import android.arch.lifecycle.LiveData
 import android.content.Context
-import android.os.AsyncTask
 import com.aquaowlet.myreward.data.Task
 import com.aquaowlet.myreward.data.TaskCurrentAndChildren
 
+/**
+ * Concrete implementations to manage the task data with the database.
+ */
 class TasksRepository private constructor(context: Context) {
 
     private val tasksDao: TasksDao
-    private val mTaskCurrentAndChildrenDao: TaskCurrentAndChildrenDao
+    private val taskCurrentAndChildrenDao: TaskCurrentAndChildrenDao
     private val allTasks: LiveData<List<Task>>
-    private val mAllCurrentAndChildren: LiveData<List<TaskCurrentAndChildren>>
+    private val allCurrentAndChildren: LiveData<List<TaskCurrentAndChildren>>
 
     init {
         val appDatabase = AppDatabase.getInstance(context)
         tasksDao = appDatabase.tasksDao()
         allTasks = tasksDao.getAllTasks()
-        mTaskCurrentAndChildrenDao = appDatabase.taskCurrentAndChildren()
-        mAllCurrentAndChildren = mTaskCurrentAndChildrenDao.getTaskParentChildren()
+        taskCurrentAndChildrenDao = appDatabase.taskCurrentAndChildren()
+        allCurrentAndChildren = taskCurrentAndChildrenDao.getTaskCurrentAndChildren()
+    }
+
+    fun getTaskById(id: String): LiveData<Task?> {
+        return tasksDao.getTaskById(id)
     }
 
     fun getAllTasks(): LiveData<List<Task>> {
         return allTasks
     }
 
-    fun getAllParentChildren(): LiveData<List<TaskCurrentAndChildren>> {
-        return mAllCurrentAndChildren
+    /**
+     * Get all current and children relationships.
+     */
+    fun getAllCurrentAndChildren(): LiveData<List<TaskCurrentAndChildren>> {
+        return allCurrentAndChildren
     }
 
+    /**
+     * Insert a new task.
+     */
     fun insert(task: Task) {
-        InsertAsyncTask(tasksDao).execute(task)
+        Thread(Runnable {
+            tasksDao.insert(task)
+        }).start()
     }
 
-    class InsertAsyncTask(dao: TasksDao) : AsyncTask<Task, Void, Void>() {
-        private val tasksDao = dao
-
-        override fun doInBackground(vararg params: Task?): Void? {
-            tasksDao.insertTask(params[0]!!)
-            return null
-        }
-
+    /**
+     * Update a task.
+     */
+    fun update(task: Task) {
+        Thread(Runnable {
+            tasksDao.update(task)
+        }).start()
     }
+
+    /**
+     * Delete a task.
+     */
+    fun delete(task: Task) {
+        Thread(Runnable {
+            tasksDao.delete(task)
+        }).start()
+    }
+
 
     companion object {
         @Volatile
         private var INSTANCE: TasksRepository? = null
 
+        /**
+         * Get or create a TasksRepository with singleton pattern.
+         */
         fun getInstance(context: Context): TasksRepository {
             if (INSTANCE == null) {
                 synchronized(TasksRepository::class) {
