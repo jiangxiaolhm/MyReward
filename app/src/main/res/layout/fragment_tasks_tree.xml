@@ -12,7 +12,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="tasksViewModel"
+            name="viewModel"
             type="com.aquaowlet.myreward.taskstree.TasksTreeViewModel" />
     </data>
 

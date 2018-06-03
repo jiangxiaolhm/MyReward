@@ -16,45 +16,94 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
-        android:id="@+id/layout_tree_node_content"
+    <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@+id/text_tree_node_indent"
+        android:layout_toEndOf="@id/text_tree_node_indent"
         android:layout_toRightOf="@id/text_tree_node_indent"
-        android:background="@drawable/tree_node"
-        android:gravity="center_vertical"
-        android:minHeight="32dp">
-
-        <com.github.johnkil.print.PrintView
-            android:id="@+id/icon_collapse"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
+        <!-- Bottom View Start-->
+        <LinearLayout
+            android:id="@+id/bottom_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:iconColor="@color/color_icon"
-            app:iconFont="fonts/holo-icon-font.ttf"
-            app:iconSize="20dp"
-            app:iconText="@string/ic_collapse" />
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_view_complete_task"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text_task_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/icon_collapse"
-            android:layout_toRightOf="@id/icon_collapse" />
+            <com.github.johnkil.print.PrintView
+                android:id="@+id/icon_to_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:iconColor="@color/color_alert"
+                app:iconFont="fonts/material-icon-font.ttf"
+                app:iconSize="15dp"
+                app:iconText="@string/ic_check_circle_outline_blank" />
+        </LinearLayout>
+        <!-- Bottom View End-->
 
-        <com.github.johnkil.print.PrintView
-            android:id="@+id/icon_overflow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            app:iconColor="@color/color_icon"
-            app:iconFont="fonts/holo-icon-font.ttf"
-            app:iconSize="20dp"
-            app:iconText="@string/ic_overflow" />
+        <!-- Surface View Start -->
+        <RelativeLayout
+            android:id="@+id/layout_tree_node_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/text_tree_node_indent"
+            android:layout_toRightOf="@id/text_tree_node_indent"
+            android:background="@drawable/tree_node"
+            android:gravity="center_vertical"
+            android:minHeight="32dp">
 
-    </RelativeLayout>
+            <com.github.johnkil.print.PrintView
+                android:id="@+id/icon_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:visibility="invisible"
+                app:iconColor="@color/color_icon_default"
+                app:iconFont="fonts/holo-icon-font.ttf"
+                app:iconSize="20dp"
+                app:iconText="@string/ic_collapse" />
 
+            <TextView
+                android:id="@+id/text_task_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/icon_complete"
+                android:layout_toRightOf="@id/icon_collapse"
+                android:gravity="center_vertical"
+                android:paddingBottom="3dp" />
+
+            <com.github.johnkil.print.PrintView
+                android:id="@+id/icon_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/icon_overflow"
+                app:iconColor="@color/color_icon_default"
+                app:iconFont="fonts/material-icon-font.ttf"
+                app:iconSize="15dp" />
+
+
+            <com.github.johnkil.print.PrintView
+                android:id="@+id/icon_overflow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:iconColor="@color/color_icon_default"
+                app:iconFont="fonts/holo-icon-font.ttf"
+                app:iconSize="20dp"
+                app:iconText="@string/ic_overflow" />
+
+        </RelativeLayout>
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
 
 </RelativeLayout>

@@ -5,7 +5,7 @@
  * Last modified 28/05/18 12:13 AM
  */
 
-package com.aquaowlet.myreward.taskstree
+package com.aquaowlet.myreward.taskstree.item
 
 import android.util.Log
 import android.view.DragEvent
@@ -13,15 +13,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.aquaowlet.myreward.R
+import com.aquaowlet.myreward.taskstree.TasksTreeViewModel
 import com.aquaowlet.myreward.util.Constant
 import com.unnamed.b.atv.model.TreeNode
 import com.unnamed.b.atv.view.AndroidTreeView
 import com.unnamed.b.atv.view.TreeNodeWrapperView
 
-class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener {
 
-    private val taskTreeNode = taskNode
-    private var taskTreeView: AndroidTreeView? = null
+class TasksTreeItemDragEventListener(
+        private val taskTreeNode: TreeNode
+) : View.OnDragListener {
+
+    //    private val taskTreeNode = taskNode
+    private val taskTreeView: AndroidTreeView = taskTreeNode.viewHolder.treeView
 
     companion object {
         const val MOVE_ABOVE_CURRENT_NODE = 0
@@ -29,8 +33,8 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
         const val MOVE_BELOW_CURRENT_NODE = 1
     }
 
+    @Suppress("DEPRECATION")
     override fun onDrag(v: View?, event: DragEvent?): Boolean {
-
         // The View and DragEvent should not be null.
         v!!
         event!!
@@ -49,11 +53,9 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
 
         // Get the task view in the tree node.
         v as ViewGroup
-        val taskView = v.getChildAt(1)
-        if (taskView.id != R.id.layout_tree_node_content) {
-            Log.e(Constant.ERROR, "The taskView from current view at index 1 is not the layout_tree_node_content.")
-            return false
-        }
+        // Get the swipe layout.
+        val swipeLayout = v.getChildAt(1) as ViewGroup
+        val taskView = swipeLayout.getChildAt(1)
 
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {
@@ -64,6 +66,7 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
                 val previousBackgroundSetting = taskView.background
+
                 taskView.background =
                         when (dropLocation) {
                             MOVE_INTO_SUBTREE_OR_SAME_NODE -> taskView.context.resources.getDrawable(R.drawable.tree_node_drop_middle)
@@ -71,6 +74,7 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
                             MOVE_BELOW_CURRENT_NODE -> taskView.context.resources.getDrawable(R.drawable.tree_node_drop_bottom)
                             else -> taskView.context.resources.getDrawable(R.drawable.tree_node)
                         }
+
                 if (previousBackgroundSetting != taskView.background) {
                     taskView.invalidate()
                 }
@@ -83,8 +87,6 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
             }
             DragEvent.ACTION_DROP -> {
                 val draggedTaskNode = event.localState as TreeNode
-                taskTreeView = TasksTreeViewHolder.getInstance(v.context).taskTreeView
-                taskTreeNode!!
                 // When the dragged node and current are the same node or the dragged node is the ancestor node of current, prevent the insertion.
                 if (draggedTaskNode != taskTreeNode && !isAncestor(draggedTaskNode, taskTreeNode)) {
                     if (dropLocation != MOVE_INTO_SUBTREE_OR_SAME_NODE) {
@@ -111,7 +113,6 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
                 return true
             }
         }
-
     }
 
     /**
@@ -136,7 +137,7 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
         // Remove the dragged node from it parent and modify its parent node accordingly.
         removeDraggedNodeFromParent(draggedTaskNode)
 
-        val parentNode = taskTreeNode!!.parent
+        val parentNode = taskTreeNode.parent
         // The drop point node insertPoint in its current' children list for insert the dragged node
         val insertPoint = parentNode.children.indexOf(taskTreeNode) + dropLocation
 
@@ -144,16 +145,16 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
         val removedNodes = mutableListOf<TreeNode>()
         for (i in insertPoint until parentNode.children.size) {
             removedNodes.add(parentNode.children[insertPoint])
-            taskTreeView!!.removeNode(parentNode.children[insertPoint])
+            taskTreeView.removeNode(parentNode.children[insertPoint])
         }
 
         // Insert the dragged node to the insert point.
-        taskTreeView!!.addNode(taskTreeNode.parent, draggedTaskNode)
+        taskTreeView.addNode(taskTreeNode.parent, draggedTaskNode)
         updateTreeNodeIndent(draggedTaskNode)
 
         // Insert removed nodes after the inserted dragged node.
         for (i in 0 until removedNodes.size) {
-            taskTreeView!!.addNode(parentNode, removedNodes[i])
+            taskTreeView.addNode(parentNode, removedNodes[i])
         }
     }
 
@@ -163,9 +164,10 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
     private fun insertNodeIntoSubtree(draggedTaskNode: TreeNode) {
         // Remove the dragged node from it parent and modify its parent node accordingly.
         removeDraggedNodeFromParent(draggedTaskNode)
-        taskTreeView!!.addNode(taskTreeNode, draggedTaskNode)
+        taskTreeView.addNode(taskTreeNode, draggedTaskNode)
         updateTreeNodeIndent(draggedTaskNode)
-        val treeNodeContentLayout = getTreeNodeRootView(taskTreeNode!!).getChildAt(1) as ViewGroup
+        val swipeLayout = getTreeNodeRootView(taskTreeNode).getChildAt(1) as ViewGroup
+        val treeNodeContentLayout = swipeLayout.getChildAt(1) as ViewGroup
         val treeNodeCollapseIcon = treeNodeContentLayout.getChildAt(0)
         treeNodeCollapseIcon.visibility = View.VISIBLE
     }
@@ -174,9 +176,10 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
      * Remove the dragged tree node to be insert to other location later.
      */
     private fun removeDraggedNodeFromParent(draggedTaskNode: TreeNode) {
-        taskTreeView!!.removeNode(draggedTaskNode)
+        taskTreeView.removeNode(draggedTaskNode)
         if (draggedTaskNode.parent.children.isEmpty()) {
-            val treeNodeContentLayout = getTreeNodeRootView(draggedTaskNode.parent).getChildAt(1) as ViewGroup
+            val swipeLayout = getTreeNodeRootView(taskTreeNode).getChildAt(1) as ViewGroup
+            val treeNodeContentLayout = swipeLayout.getChildAt(1) as ViewGroup
             val treeNodeCollapseIcon = treeNodeContentLayout.getChildAt(0)
             treeNodeCollapseIcon.visibility = View.INVISIBLE
         }
@@ -188,7 +191,7 @@ class TasksTreeItemDragEventListener(taskNode: TreeNode?) : View.OnDragListener 
     private fun getTreeNodeRootView(node: TreeNode): ViewGroup {
         // Get the tree node outer wrapper view.
         val treeNodeWrapperView = node.viewHolder.view as TreeNodeWrapperView
-        // Get the tree node item root layout view.
+        // Get the root swipe layout of the tree node
         return treeNodeWrapperView.nodeContainer.getChildAt(0) as ViewGroup
     }
 
