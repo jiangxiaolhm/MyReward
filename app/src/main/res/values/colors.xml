@@ -13,10 +13,9 @@
     <color name="color_tree_node_background">#C5FFC7</color>
     <color name="color_tree_node_shadow">#3F553F</color>
     <color name="color_tree_node_drop_location_indicator">#FF0000</color>
-    <color name="color_icon">#12558C</color>
+    <color name="color_icon_default">#12558C</color>
     <color name="color_button_confirm">#FF5555</color>
     <color name="color_button_cancelled">#999999</color>
-    <!--<color name="color_edit_text_background_tint_alert">#FF5555</color>-->
     <color name="color_alert">#FF5555</color>
     <color name="color_hint_default">#9B9B9B</color>
 </resources>
