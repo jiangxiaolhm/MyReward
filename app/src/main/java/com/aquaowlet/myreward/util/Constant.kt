@@ -17,6 +17,9 @@ object Constant {
     const val INTENT_TASK = "INTENT_TASK"
     const val INTENT_TASK_ID = "INTENT_TASK_ID"
 
+    const val INTENT_EDIT_TASK_REQUEST_CODE = 1
+    const val INTENT_RESULT = "INTENT_RESULT"
+
     const val INTENT_ADD_TASK = "INTENT_ADD_TASK"
     const val INTENT_EDIT_TASK = "INTENT_EDIT_TASK"
     const val INTENT_VIEW_DETAILS = "INTENT_VIEW_DETAILS"

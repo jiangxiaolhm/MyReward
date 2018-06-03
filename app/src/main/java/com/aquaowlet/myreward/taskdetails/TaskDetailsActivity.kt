@@ -38,7 +38,18 @@ class TaskDetailsActivity : AppCompatActivity() {
             val intent = Intent(this@TaskDetailsActivity, AddEditTaskActivity::class.java)
             intent.putExtra(Constant.INTENT_TYPE, Constant.INTENT_EDIT_TASK)
             intent.putExtra(Constant.INTENT_TASK, binding.viewModel!!.task!!)
-            startActivity(intent)
+            startActivityForResult(intent, Constant.INTENT_EDIT_TASK_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Constant.INTENT_EDIT_TASK_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                val updatedTask = data?.extras?.getSerializable(Constant.INTENT_RESULT) as Task?
+                if (updatedTask != null) {
+                    binding.viewModel!!.setupTaskDetails(updatedTask)
+                }
+            }
         }
     }
 }

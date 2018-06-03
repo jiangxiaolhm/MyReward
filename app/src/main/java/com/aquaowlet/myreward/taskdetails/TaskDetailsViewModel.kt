@@ -2,6 +2,7 @@ package com.aquaowlet.myreward.taskdetails
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.databinding.ObservableField
 import com.aquaowlet.myreward.R
 import com.aquaowlet.myreward.data.Task
@@ -16,6 +17,7 @@ class TaskDetailsViewModel(context: Application) : AndroidViewModel(context) {
     private val tasksRepository = TasksRepository.getInstance(context)
 
     var task: Task? = null
+
     var parentName = ObservableField<String>()
     var name = ObservableField<String>()
     var reward = ObservableField<String>()
@@ -32,12 +34,8 @@ class TaskDetailsViewModel(context: Application) : AndroidViewModel(context) {
         name.set(task.name)
         reward.set(task.reward)
         punishment.set(task.punishment)
-        if (task.startAt != null) {
-            startAt.set(Util.simpleDateFormat.format(task.startAt))
-        }
-        if (task.dueAt != null) {
-            dueAt.set(Util.simpleDateFormat.format(task.dueAt))
-        }
+        startAt.set(Util.formatDateToString(task.startAt))
+        dueAt.set(Util.formatDateToString(task.dueAt))
         if (task.repeatable) {
             repeatable.set(getApplication<Application>().getString(R.string.yes))
 

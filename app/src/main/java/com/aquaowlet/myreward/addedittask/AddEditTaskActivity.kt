@@ -7,9 +7,11 @@
 
 package com.aquaowlet.myreward.addedittask
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -21,6 +23,9 @@ import com.aquaowlet.myreward.util.Constant
 import kotlinx.android.synthetic.main.activity_add_edit_task.*
 import java.util.*
 import android.databinding.DataBindingUtil
+import android.databinding.Observable
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
 import android.widget.EditText
 import android.widget.Toast
 import com.android.databinding.library.baseAdapters.BR
@@ -51,20 +56,53 @@ class AddEditTaskActivity : AppCompatActivity() {
         when (intentType) {
             Constant.INTENT_ADD_TASK -> {
                 setTitle(R.string.title_new_task)
-
-                val parentTask = intent.getSerializableExtra(Constant.INTENT_PARENT_TASK) as Task?
-
-                if (parentTask != null) {
-                    text_task_parent_name.text = parentTask.name
-                }
-
             }
             Constant.INTENT_EDIT_TASK -> {
-                // TODO to edit task
                 setTitle(R.string.title_edit_task)
             }
             else -> {
                 Log.e(Constant.ERROR, "Unknown intent.")
+            }
+        }
+
+        val intentTask = intent.getSerializableExtra(Constant.INTENT_TASK) as Task?
+        val intentParentTask = intent.getSerializableExtra(Constant.INTENT_PARENT_TASK) as Task?
+        binding.viewModel!!.setupAddEditTask(intentTask, intentParentTask)
+
+        binding.viewModel!!.repeatable.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                sender as ObservableBoolean
+                if (sender.get()) {
+                    row_task_period.visibility = View.VISIBLE
+                } else {
+                    row_task_period.visibility = View.GONE
+                }
+            }
+        })
+
+        spinner_task_period.post {
+
+            val period = text_task_period.text.toString()
+
+            if (period.isNotEmpty()) {
+                when (period) {
+                    Task.EVERY_DAY.toString() -> {
+                        spinner_task_period.setSelection(0)
+                    }
+                    Task.EVERY_WEEK.toString() -> {
+                        spinner_task_period.setSelection(1)
+                    }
+                    Task.EVERY_MONTH.toString() -> {
+                        spinner_task_period.setSelection(2)
+                    }
+                    Task.EVERY_YEAR.toString() -> {
+                        spinner_task_period.setSelection(3)
+                    }
+                    else -> {
+                        spinner_task_period.setSelection(4)
+                        text_task_period.visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }
@@ -110,18 +148,20 @@ class AddEditTaskActivity : AppCompatActivity() {
         spinner_task_period.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                binding.viewModel!!.selectedPeriod.set(parent?.getItemAtPosition(position).toString())
                 if (parent?.getItemAtPosition(position).toString() == resources.getString(R.string.task_period_custom_days)) {
-                    text_task_custom_period.visibility = View.VISIBLE
+                    text_task_period.visibility = View.VISIBLE
                 } else {
-                    clearAlertTint(text_task_custom_period)
-                    text_task_custom_period.visibility = View.GONE
+                    clearAlertTint(text_task_period)
+                    text_task_period.visibility = View.INVISIBLE
                 }
             }
         }
-        text_task_custom_period.setOnFocusChangeListener { v, hasFocus ->
+        text_task_period.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 binding.viewModel!!.customPeriod.set((v as EditText).text.toString())
-                validateCustomPeriod()
+                validatePeriod()
             }
         }
     }
@@ -135,7 +175,20 @@ class AddEditTaskActivity : AppCompatActivity() {
 
             updateBindingVariables()
             if (validateForm()) {
-                binding.viewModel!!.addTask()
+
+                val intentType = intent.extras.getString(Constant.INTENT_TYPE)
+                when (intentType) {
+                    Constant.INTENT_ADD_TASK -> {
+                        binding.viewModel!!.addTask()
+                    }
+                    Constant.INTENT_EDIT_TASK -> {
+                        binding.viewModel!!.editTask()
+
+                        val result = Intent()
+                        result.putExtra(Constant.INTENT_RESULT, binding.viewModel!!.task)
+                        setResult(Activity.RESULT_OK, result)
+                    }
+                }
                 Toast.makeText(this@AddEditTaskActivity, getString(R.string.task_add_task_successfully_message), Toast.LENGTH_SHORT).show()
                 finish()
             } else {
@@ -214,13 +267,13 @@ class AddEditTaskActivity : AppCompatActivity() {
     /**
      * Validate if the custom period is empty.
      */
-    private fun validateCustomPeriod(): Boolean {
+    private fun validatePeriod(): Boolean {
 
         if (spinner_task_period.selectedItem.toString() == resources.getString(R.string.task_period_custom_days)) {
             if (binding.viewModel!!.validateCustomPeriod()) {
-                clearAlertTint(text_task_custom_period)
+                clearAlertTint(text_task_period)
             } else {
-                setAlertTint(text_task_custom_period)
+                setAlertTint(text_task_period)
                 return false
             }
         }
@@ -235,12 +288,12 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         isValid = isValid && validateTaskName()
         isValid = isValid && validateStartAndDueDate()
-        isValid = isValid && validateCustomPeriod()
+        isValid = isValid && validatePeriod()
 
         if (isValid) {
-            println("Yes")
+            println("Is valid")
         } else {
-            println("No")
+            println("Not valid")
         }
         return isValid
     }
@@ -279,7 +332,7 @@ class AddEditTaskActivity : AppCompatActivity() {
 
                 cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 cal.set(Calendar.MINUTE, minute)
-                editText.setText(Util.simpleDateFormat.format(cal.time))
+                editText.setText(Util.formatDateToString(cal.time))
             }
             TimePickerDialog(
                     this@AddEditTaskActivity,
@@ -306,7 +359,8 @@ class AddEditTaskActivity : AppCompatActivity() {
         binding.viewModel!!.startAt.set(text_task_start_at.text.toString())
         binding.viewModel!!.dueAt.set(text_task_due_at.text.toString())
         binding.viewModel!!.repeatable.set(checkbox_task_repeatable.isChecked)
-        binding.viewModel!!.customPeriod.set(text_task_custom_period.text.toString())
+        binding.viewModel!!.selectedPeriod.set(spinner_task_period.selectedItem.toString())
+        binding.viewModel!!.customPeriod.set(text_task_period.text.toString())
         binding.viewModel!!.description.set(text_task_description.text.toString())
     }
 }
